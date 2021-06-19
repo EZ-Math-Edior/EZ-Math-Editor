@@ -12,6 +12,14 @@ import './App.css';
 *
 *
 ****************************************/
+
+function DoSomething(){
+	var hideField = document.getElementById("textSpan").value;
+	console.log(hideField);
+	document.execCommand('bold', true, hideField)
+}
+
+
 function App() {
   return (
     <div className="App">
@@ -22,8 +30,15 @@ function App() {
           Here is the line. Below should be a box to put text in..
           Edit <code>src/App.js</code> and save to reload.
         </p>
-		<div contenteditable="true">
+		<div contenteditable="true" id ="textSpan">
   		This text can be edited by the user.
+		</div>
+		<div class="btn-group">
+		<button onClick = {() => DoSomething()}>
+			Btn1
+		</button>
+		<button onClick = {() => DoSomething()}>Btn2</button>
+		<button>Btn3</button>
 		</div>
 		</header>
 		</div>
