@@ -1,5 +1,6 @@
 {
-  "name": "exme",
+  "homepage": "https://ez-math-edior.github.io/EZ-Math-Editor/"
+	"name": "exme",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
