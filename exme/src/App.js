@@ -1,6 +1,8 @@
 import logo from './logo.svg';
 import './App.css';
-
+import React from 'react';
+import HideableText from './HideableText';
+import TextField from './TextField'
 /****************************************
 * TODO:
 *	Stop editable text box from infinitely resizing
@@ -9,16 +11,16 @@ import './App.css';
 *	how to handle math symbols, equations, etc.
 *	text alignment justification
 *	buttons/dropdown of options to do the above things
-*
+*	For editable text field to show up the <div> </div> must be nested in <header> </header>
 *
 ****************************************/
-
-function DoSomething(){
-	var hideField = document.getElementById("textSpan").value;
-	console.log(hideField);
-	document.execCommand('bold', true, hideField)
+function sayHello()
+{
+	/*var textField = document.getElementById("editor").addEventListener("input", function() {
+		
+	})*/
+	alert("in button 1");
 }
-
 
 function App() {
   return (
@@ -27,21 +29,19 @@ function App() {
         <img src={logo} className="App-logo" alt="logo" />
         <p>
           WELCOME TO THE EZ MATH EDITOR!
-          Here is the line. Below should be a box to put text in..
-          Edit <code>src/App.js</code> and save to reload.
+          <HideableText text = "Bold italiasda underlien"/>
+
         </p>
-		<div contenteditable="true" id ="textSpan">
-  		This text can be edited by the user.
+		<div id ="editor">
+			<TextField text = "You can edit this text"/>
 		</div>
 		<div class="btn-group">
-		<button onClick = {() => DoSomething()}>
-			Btn1
-		</button>
-		<button onClick = {() => DoSomething()}>Btn2</button>
-		<button>Btn3</button>
+			<button onClick={sayHello}>Btn1</button>
+			<button>Btn2</button>
+			<button>Btn3</button>
 		</div>
 		</header>
-		</div>
+	</div>
   );
 }
 
