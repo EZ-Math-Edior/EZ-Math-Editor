@@ -1,5 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
+import React, {Component} from 'react';
+import HideableText from './HideableText';
 
 function App() {
   return (
@@ -10,6 +12,9 @@ function App() {
           WELCOME TO THE EZ MATH EDITOR!
           this is a test
           Edit <code>src/App.js</code> and save to reload.
+
+          <HideableText text = "Bold italiasda underlien"/>
+
         </p>
         <a
           className="App-link"
@@ -20,7 +25,12 @@ function App() {
           Learn React
         </a>
       </header>
+
     </div>
+
+
+
+
   );
 }
 
