@@ -3,6 +3,7 @@ import './App.css';
 import React from 'react';
 import HideableText from './HideableText';
 import TextField from './TextField'
+import DraggableField from './DraggableField';
 /****************************************
 * TODO:
 *	Stop editable text box from infinitely resizing
@@ -22,6 +23,9 @@ function sayHello()
 	alert("in button 1");
 }
 
+const textField1 = <TextField/> 
+const draggableField1 = <DraggableField/>
+
 function App() {
   return (
     <div className="App">
@@ -33,7 +37,14 @@ function App() {
 
         </p>
 		<div id ="editor">
-			<TextField text = "You can edit this text"/>
+			<p>
+				{textField1}
+			</p>
+			<p>
+				{draggableField1}
+			</p>
+
+			
 		</div>
 		<div class="btn-group">
 			<button onClick={sayHello}>Btn1</button>
