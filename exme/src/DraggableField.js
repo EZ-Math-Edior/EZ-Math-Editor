@@ -66,17 +66,17 @@ export default class DraggableField extends Component {
     render() {
         return (
             <Rnd
-               disableDragging = {this.draggable} //counterintuitive i know but idk why rnd has it like this lol
-               enableResizing = {this.scalable}
+               disableDragging = {!this.state.draggable} //counterintuitive i know but idk why rnd has it like this lol
+               enableResizing = {this.state.scalable}
                cancel = "textField"
                 // cancel = ".cancel"
             >
                 {/* todo: alternative to just some editable thing - may want to find a package/make a custom thing idk */}
                 <div 
-                    contenteditable= {this.editable} 
+                    contentEditable= {this.state.editable} 
                     id = "textField"
                 >	
-                    This text can be dragged, but not edited atm.
+                    This text can be dragged and edited
                 </div>
              
             </Rnd>
