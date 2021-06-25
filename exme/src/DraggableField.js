@@ -13,6 +13,7 @@ export default class DraggableField extends Component {
 
     constructor(props){
         super(props)
+        //ex. what should a text box do given particular modes? when should it be editable etc.
         this.state = {
             draggable : true,
             scalable : true, 
@@ -23,7 +24,6 @@ export default class DraggableField extends Component {
 
         
     }
-      //stores the lock status (default is unlocked)
    
 
     // these could technically be a single function but why not be explicit
@@ -41,6 +41,7 @@ export default class DraggableField extends Component {
         })
     };
 
+    //master function that flips it - just for demoing
     lockReverse = () => {
         if(this.state.locked){
             this.onFree();
@@ -66,12 +67,11 @@ export default class DraggableField extends Component {
     render() {
         return (
             <Rnd
-               disableDragging = {!this.state.draggable} //counterintuitive i know but idk why rnd has it like this lol
+               disableDragging = {!this.state.draggable} //props can change at runtime
                enableResizing = {this.state.scalable}
-               cancel = "textField"
                 // cancel = ".cancel"
             >
-                {/* todo: alternative to just some editable thing - may want to find a package/make a custom thing idk */}
+                {/* todo: alternative to just some editable text?- may want to find a package/make a custom thing idk */}
                 <div 
                     contentEditable= {this.state.editable} 
                     id = "textField"

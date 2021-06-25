@@ -14,12 +14,14 @@ import DraggableField from './DraggableField';
 *	buttons/dropdown of options to do the above things
 *	For editable text field to show up the <div> </div> must be nested in <header> </header>
 *
+* change state of child from parent (aka app) https://www.freecodecamp.org/news/react-changing-state-of-child-component-from-parent-8ab547436271/
 ****************************************/
 
 class App extends React.Component{
 	constructor(props){
 		super(props);
-		this.lockElement = React.createRef();
+		this.lockElement = React.createRef(); //associates a jsx element with the component itself i think? 
+											//i.e. we can access a different component's member functions
 	}
 
 	sayHello = () => {
@@ -30,8 +32,7 @@ class App extends React.Component{
 
 	lockTextBox = () => { 
 		this.lockElement.current.lockReverse();
-		// this.lockElement.lockReverse();
-		// alert("in buttosdfn 12");
+
 	};
 
 	render() {
@@ -49,14 +50,14 @@ class App extends React.Component{
 						<TextField/> 
 					</p>
 					<p>
-						<DraggableField ref={this.lockElement}/>
+						<DraggableField ref={this.lockElement}/> {/* this is how you associate a jsx element with the createRef in the constructor */}
 					</p>
 
 					
 				</div>
 				<div class="btn-group">
 					<button onClick={this.sayHello}>Btn1</button>
-					<button onClick={this.lockTextBox}>LockTest</button>
+					<button onClick={this.lockTextBox}>Lock field</button>
 					<button>Btn3</button>
 				</div>
 				</header>
