@@ -15,45 +15,54 @@ import DraggableField from './DraggableField';
 *	For editable text field to show up the <div> </div> must be nested in <header> </header>
 *
 ****************************************/
-function sayHello()
-{
-	/*var textField = document.getElementById("editor").addEventListener("input", function() {
-		
-	})*/
-	alert("in button 1");
-}
 
-const textField1 = <TextField/> 
-const draggableField1 = <DraggableField/>
+class App extends React.Component{
+	constructor(props){
+		super(props);
+		this.lockElement = React.createRef();
+	}
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          WELCOME TO THE EZ MATH EDITOR!
-          <HideableText text = "Bold italiasda underlien"/>
+	sayHello = () => {
+		/*var textField = document.getElementById("editor").addEventListener("input", function() {
+		})*/
+		alert("in button 1");
+	}
 
-        </p>
-		<div id ="editor">
-			<p>
-				{textField1}
-			</p>
-			<p>
-				{draggableField1}
-			</p>
+	lockTextBox = () => { 
+		this.lockElement.current.lockReverse();
+		// this.lockElement.lockReverse();
+		// alert("in buttosdfn 12");
+	};
 
-			
-		</div>
-		<div class="btn-group">
-			<button onClick={sayHello}>Btn1</button>
-			<button>Btn2</button>
-			<button>Btn3</button>
-		</div>
-		</header>
-	</div>
-  );
+	render() {
+		return (
+			<div className="App">
+			<header className="App-header">
+				<img src={logo} className="App-logo" alt="logo" />
+				<p>
+				WELCOME TO THE EZ MATH EDITOR!
+				<HideableText text = "Bold italiasda underlien"/>
+
+				</p>
+				<div id ="editor">
+					<p>
+						<TextField/> 
+					</p>
+					<p>
+						<DraggableField ref={this.lockElement}/>
+					</p>
+
+					
+				</div>
+				<div class="btn-group">
+					<button onClick={this.sayHello}>Btn1</button>
+					<button onClick={this.lockTextBox}>LockTest</button>
+					<button>Btn3</button>
+				</div>
+				</header>
+			</div>
+		);
+	}
 }
 
 export default App;

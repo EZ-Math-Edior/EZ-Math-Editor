@@ -13,17 +13,22 @@ export default class DraggableField extends Component {
 
     constructor(props){
         super(props)
-        //stores the lock status (default is unlocked)
         this.state = {
             draggable : true,
             scalable : true, 
-            editable : true
+            editable : true,
+            locked: false
+           
         }
+
+        
     }
+      //stores the lock status (default is unlocked)
+   
 
     // these could technically be a single function but why not be explicit
-    onLock = (dragged) => {
-        dragged.setState({
+    onLock = () => {
+        this.setState({
             draggable : false, 
             scalable : false
         })
@@ -34,6 +39,27 @@ export default class DraggableField extends Component {
             draggable : true, 
             scalable : true
         })
+    };
+
+    lockReverse = () => {
+        if(this.state.locked){
+            this.onFree();
+            this.setState({
+                locked : false
+            })
+            console.log("freed");
+        } else {
+            this.onLock();
+            this.setState({
+                locked : true
+            })
+            console.log("locked");
+
+        }
+
+        
+
+        
     };
 
 
