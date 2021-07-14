@@ -32,13 +32,20 @@ function App() {
           <HideableText text = "Bold italiasda underlien"/>
 
         </p>
-		<div id ="editor">
-			<TextField text = "You can edit this text"/>
-		</div>
-		<div class="btn-group">
+		<div class="toolbar">
+			<ul class="tool-list">
+				<li class="tool">
+					<button type="button" data-command="bold" class="tool--btn">
+						<i class=' fas fa-bold'></i>
+					</button> 
+				</li>
 			<button onClick={sayHello}>Btn1</button>
 			<button>Btn2</button>
 			<button>Btn3</button>
+			</ul>
+		</div>
+		<div id ="editor">
+			<TextField text = "You can edit this text"/>
 		</div>
 		</header>
 	</div>
