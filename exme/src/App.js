@@ -1,8 +1,9 @@
-import logo from './logo.svg';
 import './App.css';
 import React from 'react';
 import HideableText from './HideableText';
 import TextField from './TextField'
+import DraggableField from './DraggableField';
+//import jsPDF from 'jspdf';
 /****************************************
 * TODO:
 *	Stop editable text box from infinitely resizing
@@ -13,43 +14,74 @@ import TextField from './TextField'
 *	buttons/dropdown of options to do the above things
 *	For editable text field to show up the <div> </div> must be nested in <header> </header>
 *
+* change state of child from parent (aka app) https://www.freecodecamp.org/news/react-changing-state-of-child-component-from-parent-8ab547436271/
 ****************************************/
-function sayHello()
-{
-	/*var textField = document.getElementById("editor").addEventListener("input", function() {
-		
-	})*/
-	alert("in button 1");
-}
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          WELCOME TO THE EZ MATH EDITOR!
-          <HideableText text = "Bold italiasda underlien"/>
+class App extends React.PureComponent{
+	constructor(props){
+		super(props);
+		this.lockElement = React.createRef(); //associates a jsx element with the component itself i think?
+											//i.e. we can access a different component's member functions
+		this.state = {}
+	}
 
-        </p>
-		<div class="toolbar">
-			<ul class="tool-list">
-				<li class="tool">
-					<button type="button" data-command="bold" class="tool--btn">
-						<i class=' fas fa-bold'></i>
-					</button> 
-				</li>
-			<button onClick={sayHello}>Btn1</button>
-			<button>Btn2</button>
-			<button>Btn3</button>
-			</ul>
-		</div>
-		<div id ="editor">
-			<TextField text = "You can edit this text"/>
-		</div>
-		</header>
-	</div>
-  );
+	sayHello = () => {
+		/*var textField = document.getElementById("editor").addEventListener("input", function() {
+		})*/
+		alert("in button 1");
+	}
+
+	lockTextBox = () => {
+		this.lockElement.current.lockReverse();
+
+	};
+	/*
+	// generate pdf function
+	generatePDF = () => {
+		// new doc variable
+		var doc = new jsPDF('p', 'pt', 'a4');
+		doc.html(document.querySelector("#editor"), {
+			callback: function(pdf) {
+				pdf.save("yourPDF.pdf");
+			}
+		}
+	);
+	}*/
+
+	render() {
+		return (
+
+			<div className="App">
+			<header className="App-header">
+				<p>
+				WELCOME TO THE EZ MATH EDITOR!
+				</p>
+				<div id ="editor">
+					<p>
+						<TextField/>
+					</p>
+					<p>
+						<DraggableField ref={this.lockElement}/> {/* this is how you associate a jsx element with the createRef in the constructor */}
+					</p>
+
+				</div>
+
+				<div id ="testtext">
+					<p>
+						<TextField/>
+					</p>
+				</div>
+
+				<div class="btn-group">
+					<button onClick={this.sayHello}>Btn1</button>
+					<button onClick={this.lockTextBox}>Lock field</button>
+					<button>Btn3</button>
+					<button onClick={this.generatePDF} type="primary">get your pdf</button>
+				</div>
+				</header>
+			</div>
+		);
+	}
 }
 
 export default App;
