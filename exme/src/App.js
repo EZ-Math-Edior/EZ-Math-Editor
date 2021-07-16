@@ -1,6 +1,6 @@
 import './App.css';
 import React from 'react';
-import HideableText from './HideableText';
+// import HideableText from './HideableText';
 import TextField from './TextField'
 import DraggableField from './DraggableField';
 import jsPDF from 'jspdf';
@@ -17,6 +17,7 @@ import jsPDF from 'jspdf';
 * change state of child from parent (aka app) https://www.freecodecamp.org/news/react-changing-state-of-child-component-from-parent-8ab547436271/
 ****************************************/
 
+
 class App extends React.PureComponent{
 	constructor(props){
 		super(props);
@@ -28,7 +29,8 @@ class App extends React.PureComponent{
 	sayHello = () => {
 		/*var textField = document.getElementById("editor").addEventListener("input", function() {
 		})*/
-		alert("in button 1");
+
+		alert(window.innerHeight + " " + window.innerWidth);
 	}
 
 	lockTextBox = () => {
@@ -38,33 +40,37 @@ class App extends React.PureComponent{
 	// generate pdf function
 	generatePDF = () => {
 		// new doc variable
-		var doc = new jsPDF('p', 'pt', 'a4');
-		doc.html(document.querySelector("#editor"), {
+		var doc = new jsPDF('l', 'pt', [window.innerWidth, window.innerHeight]);
+		doc.html(document.querySelector("#content"), {
 			callback: function(pdf) {
 				pdf.save("yourPDF.pdf");
 			}
 		}
-	);
+		);
 	}
+
+
 
 	render() {
 		return (
 			<div className="App">
-				<header className="App-header">
-					<h1> {/* Note according to HTML conventions h1 is the most important header */}
-					WELCOME TO THE EZ MATH EDITOR!
-					</h1>
-					<div id ="editor"> {/* Note div id and div class are not the same. div id should be unique to each .js file and div class can be reused to apply the same css style */}
-						<p><TextField></TextField></p>
-						<DraggableField ref={this.lockElement}/> {/* this is how you associate a jsx element with the createRef in the constructor */}
-					</div>
-					<div class="btn-group">
-						<button onClick={this.sayHello}>Btn1</button>
-						<button onClick={this.lockTextBox}>Lock field</button>
-						<button>Btn3</button>
-						<button onClick={this.generatePDF} type="primary">get your pdf</button>
-					</div>
-				</header>
+				<div id = "content">
+					<header className="App-header">
+						<h1> {/* Note according to HTML conventions h1 is the most important header */}
+						WELCOME TO THE EZ MATH EDITOR!
+						</h1>
+						<div id ="editor"> {/* Note div id and div class are not the same. div id should be unique to each .js file and div class can be reused to apply the same css style */}
+							<p><TextField></TextField></p>
+							<DraggableField ref={this.lockElement}/> {/* this is how you associate a jsx element with the createRef in the constructor */}
+						</div>
+						<div class="btn-group">
+							<button onClick={this.sayHello}>Btn1</button>
+							<button onClick={this.lockTextBox}>Lock field</button>
+							<button>Btn3</button>
+							<button onClick={this.generatePDF} type="primary">get your pdf</button>
+						</div>
+					</header>
+				</div>
 			</div>
 		);
 	}
