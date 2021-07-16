@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import React from 'react';
 import HideableText from './HideableText';
@@ -36,7 +35,6 @@ class App extends React.PureComponent{
 		this.lockElement.current.lockReverse();
 
 	};
-
 	// generate pdf function
 	generatePDF = () => {
 		// new doc variable
@@ -51,44 +49,21 @@ class App extends React.PureComponent{
 
 	render() {
 		return (
-
 			<div className="App">
-			<header className="App-header">
-				<img src={logo} className="App-logo" alt="logo" />
-				<p>
-				WELCOME TO THE EZ MATH EDITOR!
-
-				<HideableText text = <p>
-						<button onClick={this.sayHello}>bold</button>
-						<button onClick={this.sayHello}>italicize</button>
-						<button onClick={this.sayHello}>underline</button>
-														 </p>/>
-
-				</p>
-				<div id ="editor">
-					<p>
-						<TextField/>
-					</p>
-					<p>
+				<header className="App-header">
+					<h1> {/* Note according to HTML conventions h1 is the most important header */}
+					WELCOME TO THE EZ MATH EDITOR!
+					</h1>
+					<div id ="editor"> {/* Note div id and div class are not the same. div id should be unique to each .js file and div class can be reused to apply the same css style */}
+						<p><TextField></TextField></p>
 						<DraggableField ref={this.lockElement}/> {/* this is how you associate a jsx element with the createRef in the constructor */}
-					</p>
-
-				</div>
-
-				<div id ="testtext">
-					<p>
-						<TextField/>
-					</p>
-				</div>
-
-				<div class="btn-group">
-					<button onClick={this.sayHello}>Btn1</button>
-					<button onClick={this.lockTextBox}>Lock field</button>
-					<button>Btn3</button>
-
-					<button onClick={this.generatePDF} type="primary">get your pdf</button>
-
-				</div>
+					</div>
+					<div class="btn-group">
+						<button onClick={this.sayHello}>Btn1</button>
+						<button onClick={this.lockTextBox}>Lock field</button>
+						<button>Btn3</button>
+						<button onClick={this.generatePDF} type="primary">get your pdf</button>
+					</div>
 				</header>
 			</div>
 		);
