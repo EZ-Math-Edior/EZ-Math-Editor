@@ -7,7 +7,13 @@ const RichTextEditor = () => {
 	const [editorState, setEditorState] = useState( () => EditorState.createEmpty(), );
 	return (
 		<div>
-			<Editor editorState={editorState} />
+			<Editor
+				editorState={editorState}
+				onEditorStateChange={setEditorState}
+				wrapperClassName="wrapper-class"
+				editorClassName="editor-class"
+				toolbarClassName="toolbar-class"
+			/>
 		</div>
 	)
 }
