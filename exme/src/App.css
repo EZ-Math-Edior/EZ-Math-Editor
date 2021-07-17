@@ -1,16 +1,5 @@
 .App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite .5s linear;
-  }
+  text-align: left;
 }
 
 .App-header {
@@ -24,17 +13,23 @@
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.Home{
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	min-height: 10vh;
+	background: #04AA6D;
+	color: white;
 }
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.Home-Links{
+	width: 30%;
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	list-style: none;
+}
+.nav-Links{
+	list-style: none;
 }
 
 .btn-group button {
@@ -47,4 +42,4 @@
 	padding: 10px 24px; /* Some padding to make the button bigger */
 	cursor: pointer; /* Pointer/hand icon */
 	float: left; /* Float the buttons side by side */
-  }
+}

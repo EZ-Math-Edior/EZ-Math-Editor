@@ -4,6 +4,10 @@ import HideableText from './HideableText';
 import TextField from './TextField'
 import DraggableField from './DraggableField';
 import jsPDF from 'jspdf';
+import Home from './server/routes/Home';
+import RichTextEditor from './server/routes/RichTextEditor';
+import {BrowserRouter as Router, Route} from 'react-router-dom';
+
 /****************************************
 * TODO:
 *	Stop editable text box from infinitely resizing
@@ -50,12 +54,11 @@ class App extends React.PureComponent{
 	render() {
 		return (
 			<div className="App">
-				<header className="App-header">
-					<h1> {/* Note according to HTML conventions h1 is the most important header */}
-					WELCOME TO THE EZ MATH EDITOR!
-					</h1>
+					<Router>
+					<Home />
+					<Route path="/EZ-Math-Editor/editor" component={RichTextEditor} />
+					</Router>
 					<div id ="editor"> {/* Note div id and div class are not the same. div id should be unique to each .js file and div class can be reused to apply the same css style */}
-						<p><TextField></TextField></p>
 						<DraggableField ref={this.lockElement}/> {/* this is how you associate a jsx element with the createRef in the constructor */}
 					</div>
 					<div class="btn-group">
@@ -64,7 +67,6 @@ class App extends React.PureComponent{
 						<button>Btn3</button>
 						<button onClick={this.generatePDF} type="primary">get your pdf</button>
 					</div>
-				</header>
 			</div>
 		);
 	}
