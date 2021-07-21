@@ -1,5 +1,5 @@
 import './App.css';
-import React from 'react';
+import React, {useEffect } from 'react';
 // import HideableText from './HideableText';
 import TextField from './TextField'
 import DraggableField from './DraggableField';
@@ -7,7 +7,7 @@ import jsPDF from 'jspdf';
 import Home from './server/routes/Home';
 import RichTextEditor from './server/routes/RichTextEditor';
 import {BrowserRouter as Router, Route} from 'react-router-dom';
-
+import firebase from './firebase';
 /****************************************
 * TODO:
 *	Stop editable text box from infinitely resizing
@@ -26,14 +26,33 @@ class App extends React.PureComponent{
 		super(props);
 		this.lockElement = React.createRef(); //associates a jsx element with the component itself i think?
 											//i.e. we can access a different component's member functions
-		this.state = {}
+		this.state = {
+			qData : []
+		};
+		// console.log(this.state.qData);
 	}
 
-	sayHello = () => {
+	queryData = () => {
 		/*var textField = document.getElementById("editor").addEventListener("input", function() {
 		})*/
+		const ref = firebase.firestore().collection("data_test");
+		ref.onSnapshot((querySnapshot) => { 
+			const items = [];
+			querySnapshot.forEach((doc) => {
+				items.push(doc.data());
+			});
+			console.log(items.length);
+			this.modifyData(items);
+		})
+		console.log("queried");
+	}
 
-		alert(window.innerHeight + " " + window.innerWidth);
+	modifyData = (arr) => {
+		this.setState({qData: arr});
+	}
+	
+	returnData = () => {
+		return this.state.qData.map((entry) => entry.data);
 	}
 
 	lockTextBox = () => {
@@ -52,6 +71,9 @@ class App extends React.PureComponent{
 		);
 	}
 
+	
+
+	
 	render() {
 		return (
 			<div id = "content"> {/* Note div id and div class are not the same. div id should be unique to each .js file and div class can be reused to apply the same css style */}
@@ -59,10 +81,11 @@ class App extends React.PureComponent{
 				<Home />
 				<Route path="/EZ-Math-Editor" component={RichTextEditor} />
 				<div class="btn-group">
-					<button onClick={this.sayHello}>Btn1</button>
+					<button onClick={this.queryData}>Btn1</button>
 					<button onClick={this.lockTextBox}>Lock field</button>
 					<button>Btn3</button>
 					<button onClick={this.generatePDF} type="primary">get your pdf</button>
+					<h1>{this.returnData()}</h1>
 				</div>
 				</Router>
 			</div>
