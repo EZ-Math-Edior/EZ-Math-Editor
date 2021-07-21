@@ -27,32 +27,40 @@ class App extends React.PureComponent{
 		this.lockElement = React.createRef(); //associates a jsx element with the component itself i think?
 											//i.e. we can access a different component's member functions
 		this.state = {
-			qData : []
+			data : ""
 		};
 		// console.log(this.state.qData);
 	}
 
-	queryData = () => {
-		/*var textField = document.getElementById("editor").addEventListener("input", function() {
-		})*/
-		const ref = firebase.firestore().collection("data_test");
-		ref.onSnapshot((querySnapshot) => { 
+	//on app start, load data from database
+	componentDidMount(){ 
+		this.queryAndLoad();
+	}
+
+	//technically i should separate query and loading into state, but idk how
+	queryAndLoad = () => {
+		firebase.firestore().collection("user_data")
+		.where("UID", "==", 1)
+		.get()
+		.then((querySnapshot) => {
 			const items = [];
 			querySnapshot.forEach((doc) => {
 				items.push(doc.data());
 			});
-			console.log(items.length);
-			this.modifyData(items);
+			if(!querySnapshot.empty){
+				this.loadDataToState(items[0].Data);
+			}
 		})
-		console.log("queried");
+		.catch((e) => { console.log("error getting docs")
+		});
 	}
 
-	modifyData = (arr) => {
-		this.setState({qData: arr});
+	loadDataToState = (qData) => {
+		this.setState({data: qData});
 	}
 	
 	returnData = () => {
-		return this.state.qData.map((entry) => entry.data);
+		return this.state.data;
 	}
 
 	lockTextBox = () => {
@@ -81,7 +89,7 @@ class App extends React.PureComponent{
 				<Home />
 				<Route path="/EZ-Math-Editor" component={RichTextEditor} />
 				<div class="btn-group">
-					<button onClick={this.queryData}>Btn1</button>
+					<button onClick={this.queryAndLoad}>Btn1</button>
 					<button onClick={this.lockTextBox}>Lock field</button>
 					<button>Btn3</button>
 					<button onClick={this.generatePDF} type="primary">get your pdf</button>
