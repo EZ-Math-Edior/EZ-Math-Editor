@@ -1,7 +1,7 @@
 import './App.css';
 import React, {useEffect } from 'react';
 // import HideableText from './HideableText';
-import TextField from './TextField'
+// import TextField from './TextField'
 import DraggableField from './DraggableField';
 import jsPDF from 'jspdf';
 import Home from './server/routes/Home';
@@ -23,9 +23,8 @@ import firebase from './firebase';
 
 class App extends React.PureComponent{
 	constructor(props){
-		super(props);
-		this.lockElement = React.createRef(); //associates a jsx element with the component itself i think?
-											//i.e. we can access a different component's member functions
+		super(props);		
+		this.rtfRef = React.createRef();
 		this.state = {
 			data : ""
 		};
@@ -38,6 +37,8 @@ class App extends React.PureComponent{
 	}
 
 	//technically i should separate query and loading into state, but idk how
+	//anyways, this queries the database, and then whatever comes out goes into the app's state
+	//then it shoves said data into the RTF itself
 	queryAndLoad = () => {
 		firebase.firestore().collection("user_data")
 		.where("UID", "==", 1)
@@ -48,25 +49,28 @@ class App extends React.PureComponent{
 				items.push(doc.data());
 			});
 			if(!querySnapshot.empty){
-				this.loadDataToState(items[0].Data);
+				this.setDataState(items[0].Data);
+				this.storeIntoRTF();
 			}
 		})
-		.catch((e) => { console.log("error getting docs")
+		.catch((e) => { console.log("error during query and load func")
 		});
 	}
 
-	loadDataToState = (qData) => {
+	setDataState = (qData) => {
 		this.setState({data: qData});
 	}
-	
+
+	//inter-component communication via ref
+	storeIntoRTF = () => {
+		this.rtfRef.current.storeIntoRTF(this.state.data);
+	};
+
 	returnData = () => {
 		return this.state.data;
 	}
 
-	lockTextBox = () => {
-		this.lockElement.current.lockReverse();
 
-	};
 	// generate pdf function
 	generatePDF = () => {
 		// new doc variable
@@ -87,11 +91,15 @@ class App extends React.PureComponent{
 			<div id = "content"> {/* Note div id and div class are not the same. div id should be unique to each .js file and div class can be reused to apply the same css style */}
 				<Router>
 				<Home />
-				<Route path="/EZ-Math-Editor" component={RichTextEditor} />
+				<Route 
+					path="/EZ-Math-Editor" 
+					render={() => (
+						<RichTextEditor ref = {this.rtfRef} /> //use render rather than component to get ref, source: https://ui.dev/react-router-v4-pass-props-to-components/
+					)}
+					 />
 				<div class="btn-group">
-					<button onClick={this.queryAndLoad}>Btn1</button>
-					<button onClick={this.lockTextBox}>Lock field</button>
-					<button>Btn3</button>
+					<button onClick={this.queryAndLoad}>Load from Database to RTF</button>
+					{/* <button onClick={this.saveIntoDatabase}>Store into Database</button> */}
 					<button onClick={this.generatePDF} type="primary">get your pdf</button>
 					<h1>{this.returnData()}</h1>
 				</div>
