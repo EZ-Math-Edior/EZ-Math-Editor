@@ -8,6 +8,8 @@ import Home from './server/routes/Home';
 import RichTextEditor from './server/routes/RichTextEditor';
 import {BrowserRouter as Router, Route} from 'react-router-dom';
 
+import MathJax from 'react-mathjax';
+
 /****************************************
 * TODO:
 *	Stop editable text box from infinitely resizing
@@ -20,6 +22,9 @@ import {BrowserRouter as Router, Route} from 'react-router-dom';
 *
 * change state of child from parent (aka app) https://www.freecodecamp.org/news/react-changing-state-of-child-component-from-parent-8ab547436271/
 ****************************************/
+
+
+var tex = ""
 
 class App extends React.PureComponent{
 	constructor(props){
@@ -52,8 +57,19 @@ class App extends React.PureComponent{
 		);
 	}
 
+	// Convert text to latex
+	latexify = () => {
+		//get the input
+		var myInput = document.getElementById("latex");
+		//update
+		tex = tex+myInput.value+" ";
+		myInput.value = "";
+		this.forceUpdate();
+	}
+		
 	render() {
 		return (
+			
 			<div id = "content"> {/* Note div id and div class are not the same. div id should be unique to each .js file and div class can be reused to apply the same css style */}
 				<Router>
 				<Home />
@@ -64,6 +80,18 @@ class App extends React.PureComponent{
 					<button>Btn3</button>
 					<button onClick={this.generatePDF} type="primary">get your pdf</button>
 				</div>
+				<div class="latex-group">
+					<label><br /><br /><br />Enter text to convert to LaTeX formula<br /></label>
+					<input type="text" name="latex" id="latex"/>
+					<button onClick={this.latexify}>Convert</button>
+					<br /><MathJax.Provider>
+					<output name="latexOut" id="latexOut">
+						<MathJax.Node inline formula={tex} />
+					</output>
+					</MathJax.Provider>
+				</div>
+				
+				
 				</Router>
 			</div>
 		);
