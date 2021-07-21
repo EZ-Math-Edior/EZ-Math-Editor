@@ -24,21 +24,19 @@ import firebase from './firebase';
 class App extends React.PureComponent{
 	constructor(props){
 		super(props);		
-		this.rtfRef = React.createRef();
-		this.state = {
-			data : ""
-		};
-		// console.log(this.state.qData);
+		this.rtfRef = React.createRef(); //to communicate via app buttons
+		
 	}
 
-	//on app start, load data from database
 	componentDidMount(){ 
-		this.queryAndLoad();
+		this.queryAndLoad(); //on app start, load data from database
 	}
 
-	//technically i should separate query and loading into state, but idk how
+	//technically i should separate query and loading into the RTF doc, but idk how
 	//anyways, this queries the database, and then whatever comes out goes into the app's state
 	//then it shoves said data into the RTF itself
+	
+	//also, partly cause this is a mockup/laziness I used firebase for backend since its super easy to set up. I currently created my own firebase to test and i'll add you guys via email
 	queryAndLoad = () => {
 		firebase.firestore().collection("user_data")
 		.where("UID", "==", 1)
@@ -49,27 +47,22 @@ class App extends React.PureComponent{
 				items.push(doc.data());
 			});
 			if(!querySnapshot.empty){
-				this.setDataState(items[0].Data);
-				this.storeIntoRTF();
+				this.storeIntoRTF(items[0].Data);
 			}
 		})
 		.catch((e) => { console.log("error during query and load func")
 		});
 	}
 
-	setDataState = (qData) => {
-		this.setState({data: qData});
-	}
-
 	//inter-component communication via ref
-	storeIntoRTF = () => {
-		this.rtfRef.current.storeIntoRTF(this.state.data);
+	//rigged such that pressing button uploads stuff from firebase into the RTF doc itself
+	storeIntoRTF = (data) => {
+		this.rtfRef.current.dbToText(data);
 	};
 
-	returnData = () => {
-		return this.state.data;
-	}
-
+	// returnData = () => {
+	// 	return this.state.data;
+	// }
 
 	// generate pdf function
 	generatePDF = () => {
@@ -82,8 +75,6 @@ class App extends React.PureComponent{
 		}
 		);
 	}
-
-	
 
 	
 	render() {
@@ -101,7 +92,6 @@ class App extends React.PureComponent{
 					<button onClick={this.queryAndLoad}>Load from Database to RTF</button>
 					{/* <button onClick={this.saveIntoDatabase}>Store into Database</button> */}
 					<button onClick={this.generatePDF} type="primary">get your pdf</button>
-					<h1>{this.returnData()}</h1>
 				</div>
 				</Router>
 			</div>
