@@ -51,7 +51,7 @@ class App extends React.PureComponent{
 			//assume UIDs to be unique
 			//if querySnapshot isn't empty, then we found the ID
 			if(!querySnapshot.empty){ 
-				this.storeIntoRTF(querySnapshot.docs[0].data().Data); //get [0] since theres only gonna be one
+				this.loadIntoRTF(querySnapshot.docs[0].data().Data); //get [0] since theres only gonna be one
 			}
 		})
 		.catch((e) => { console.log("error during query and load func")
@@ -60,13 +60,18 @@ class App extends React.PureComponent{
 
 	//inter-component communication via ref
 	//rigged such that pressing button uploads stuff from firebase into the RTF doc itself
-	storeIntoRTF = (data) => {
-		this.rtfRef.current.dbToText(data);
+	loadIntoRTF = (data) => {
+		//if loading overwrites whats on the RTF, alert for now
+		if(data !== this.rtfRef.current.getPlainText()){
+
+			this.rtfRef.current.dbToText(data);
+		}
 	};
 
 	//i deem below spaghetti
+	//saves whatever in RTF box to database
 	storeIntoDatabase = () => {
-		const plaintext = this.rtfRef.current.getPlainText()
+		const plaintext = this.rtfRef.current.getPlainText();
 		firebase.firestore().collection("user_data")
 		.where("UID", "==", 1) //todo multi user support
 		.get()
@@ -80,12 +85,14 @@ class App extends React.PureComponent{
 				.update({
 					Data : plaintext
 				})
+				.catch((e) => { console.log("error turing update op")});
 				 //get [0] since theres only gonna be one
 			}
 		})
-		.catch((e) => { console.log("error during query and load func")
+		.catch((e) => { console.log("error during store func")
 		});
 		
+		alert("Saved to Database");
 	}
 
 	// returnData = () => {
@@ -114,6 +121,7 @@ class App extends React.PureComponent{
 		this.forceUpdate();
 	}
 		
+
 	render() {
 		return (
 			
@@ -128,7 +136,7 @@ class App extends React.PureComponent{
 					 />
 				<div class="btn-group">
 					<button onClick={this.queryAndLoad}>Load from Database to RTF</button>
-					<button onClick={this.storeIntoDatabase}>Store into Database</button>
+					<button onClick={this.storeIntoDatabase}>Save from RTF into Database</button>
 					<button onClick={this.generatePDF} type="primary">get your pdf</button>
 				</div>
 				<div class="latex-group">
