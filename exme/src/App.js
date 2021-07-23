@@ -45,15 +45,13 @@ class App extends React.PureComponent{
 	//also, partly cause this is a mockup/laziness I used firebase for backend since its super easy to set up. I currently created my own firebase to test and i'll add you guys via email
 	queryAndLoad = () => {
 		firebase.firestore().collection("user_data")
-		.where("UID", "==", 1)
+		.where("UID", "==", 1) //todo multi user support
 		.get()
 		.then((querySnapshot) => {
-			const items = [];
-			querySnapshot.forEach((doc) => {
-				items.push(doc.data());
-			});
-			if(!querySnapshot.empty){
-				this.storeIntoRTF(items[0].Data);
+			//assume UIDs to be unique
+			//if querySnapshot isn't empty, then we found the ID
+			if(!querySnapshot.empty){ 
+				this.storeIntoRTF(querySnapshot.docs[0].data().Data); //get [0] since theres only gonna be one
 			}
 		})
 		.catch((e) => { console.log("error during query and load func")
@@ -65,6 +63,30 @@ class App extends React.PureComponent{
 	storeIntoRTF = (data) => {
 		this.rtfRef.current.dbToText(data);
 	};
+
+	//i deem below spaghetti
+	storeIntoDatabase = () => {
+		const plaintext = this.rtfRef.current.getPlainText()
+		firebase.firestore().collection("user_data")
+		.where("UID", "==", 1) //todo multi user support
+		.get()
+		.then((querySnapshot) => {
+			//assume UIDs to be unique
+			//if querySnapshot isn't empty, then we found the ID
+			if(!querySnapshot.empty){ 
+				console.log(querySnapshot.docs[0].id);
+				firebase.firestore().collection("user_data")
+				.doc(querySnapshot.docs[0].id)
+				.update({
+					Data : plaintext
+				})
+				 //get [0] since theres only gonna be one
+			}
+		})
+		.catch((e) => { console.log("error during query and load func")
+		});
+		
+	}
 
 	// returnData = () => {
 	// 	return this.state.data;
@@ -106,7 +128,7 @@ class App extends React.PureComponent{
 					 />
 				<div class="btn-group">
 					<button onClick={this.queryAndLoad}>Load from Database to RTF</button>
-					{/* <button onClick={this.saveIntoDatabase}>Store into Database</button> */}
+					<button onClick={this.storeIntoDatabase}>Store into Database</button>
 					<button onClick={this.generatePDF} type="primary">get your pdf</button>
 				</div>
 				<div class="latex-group">

@@ -24,6 +24,9 @@ export default class RichTextEditor extends Component{
 
 
 	//todo
+	getPlainText = () => {
+		return this.state.editorState.getCurrentContent().getPlainText();
+	}
 	textToDb = () => {
 		// console.log("saving into database...");
 		// console.log(this.state.editorState.getCurrentContent().getPlainText());
