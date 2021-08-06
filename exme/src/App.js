@@ -5,7 +5,7 @@ import React, {useEffect } from 'react';
 import jsPDF from 'jspdf';
 import Home from './components/Banner';
 import MultiChoice from './components/MultiChoice';
-import RichTextEditor from './components/RichTextEditor';
+import MainEditor from './components/MainEditor';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 
 import MathJax from 'react-mathjax';
@@ -29,7 +29,6 @@ var tex = ""
 class App extends React.PureComponent{
 	constructor(props){
 		super(props);		
-		this.rtfRef = React.createRef(); //to communicate via app buttons
 		
 	}
 
@@ -64,7 +63,7 @@ class App extends React.PureComponent{
 				<Router>
 				<Home />
 				<Switch>
-					<Route path="/EZ-Math-Editor" component = {RichTextEditor} />
+					<Route path="/EZ-Math-Editor" component = {MainEditor} />
 					<Route path="/EZ-Math-Tester" component = {MultiChoice} />
 				</Switch>
 				<div class="latex-group">

@@ -3,9 +3,7 @@ import '../App.css';
 import { Modifier, EditorState, ContentState } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-import firebase from './firebase';//i converted into a component so we can use createRef
-//effectively does the same thing + more as the previously functional component
-//save functionality is a todo, but seems simple enough
+import firebase from './firebase';
 
 export default class RichTextEditor extends Component{
 	constructor(props){
@@ -111,9 +109,7 @@ export default class RichTextEditor extends Component{
 					<button onClick={this.queryAndLoad}>Load from Database to RTF</button>
 					<button onClick={this.storeIntoDatabase}>Save from RTF into Database</button>
 					{/* <button onClick={this.generatePDF} type="primary">get your pdf</button> */}
-					<button onClick = { () => {
-						this.props.history.push('/EZ-Math-Tester')
-					}}> Switch to Test Mode</button>
+					
 				</div>
 			</div>
 		)
