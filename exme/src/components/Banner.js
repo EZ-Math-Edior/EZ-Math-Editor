@@ -1,7 +1,7 @@
 import React from 'react';
 import '../App.css';
 
-function Home(){
+function Banner(){
 	return (
 		<nav className = "Home">
 			<h1>EZ Math Editor</h1>
@@ -9,4 +9,4 @@ function Home(){
 	)
 }
 
-export default Home;
+export default Banner;

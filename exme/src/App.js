@@ -1,9 +1,9 @@
 import './App.css';
-import React, {useEffect } from 'react';
+import React from 'react';
 // import HideableText from './HideableText';
 // import TextField from './TextField'
 import jsPDF from 'jspdf';
-import Home from './components/Banner';
+import Banner from './components/Banner';
 import MultiChoice from './components/MultiChoice';
 import MainEditor from './components/MainEditor';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
@@ -11,16 +11,8 @@ import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import MathJax from 'react-mathjax';
 
 /****************************************
-* TODO:
-*	Stop editable text box from infinitely resizing
-*	// Add text enhancement options...? (bold, italics, color, etc.)
-*	UI design (where to put text box, how big is its max, default size, etc.)
-*	how to handle math symbols, equations, etc.
-*	text alignment justification
-*	buttons/dropdown of options to do the above things
-*	For editable text field to show up the <div> </div> must be nested in <header> </header>
-*
-* change state of child from parent (aka app) https://www.freecodecamp.org/news/react-changing-state-of-child-component-from-parent-8ab547436271/
+The entry point of our application
+Components and sections of our design are separated through the react-router-dom
 ****************************************/
 
 
@@ -46,11 +38,12 @@ class App extends React.PureComponent{
 	}
 
 	// Convert text to latex
+	//this belongs in its own class
 	latexify = () => {
 		//get the input
 		var myInput = document.getElementById("latex");
 		//update
-		tex = tex+myInput.value+" ";
+		tex = myInput.value;
 		myInput.value = "";
 		this.forceUpdate();
 	}
@@ -61,7 +54,7 @@ class App extends React.PureComponent{
 			
 			<div id = "content"> {/* Note div id and div class are not the same. div id should be unique to each .js file and div class can be reused to apply the same css style */}
 				<Router>
-				<Home />
+				<Banner />
 				<Switch>
 					<Route path="/EZ-Math-Editor" component = {MainEditor} />
 					<Route path="/EZ-Math-Tester" component = {MultiChoice} />

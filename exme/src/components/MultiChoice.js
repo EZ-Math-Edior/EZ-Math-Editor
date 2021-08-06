@@ -4,10 +4,9 @@ import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import firebase from './firebase';
 
 
-//i converted into a component so we can use createRef
-//effectively does the same thing + more as the previously functional component
-//save functionality is a todo, but seems simple enough
-
+//the router that presents the multiple choice testing
+//handles a collection of questions and assesses the user
+//data on these questions are pulled directly from the back end
 export default class MultiChoice extends Component{
 	constructor(props){
 		super(props);
@@ -66,7 +65,7 @@ export default class MultiChoice extends Component{
 		let newScore = this.state.currScore+1;
 		this.setState({currScore : newScore});
 	}
-	//data is just a long string - parse for questions
+	
 	//stores all the questions into its array in state
 	parseQuestions = (data) => {
 		 data.split("\n").forEach( (elem) => {
@@ -93,10 +92,6 @@ export default class MultiChoice extends Component{
 		 this.setState({readyToDisplay : true})
 		 console.log(this.state.Questions);
 
-	}
-
-	restartPage = () => {
-		window.location.reload();
 	}
 
 	//goes through the backend and gathers all the question data

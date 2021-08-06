@@ -5,6 +5,7 @@ import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import firebase from './firebase';
 
+//RTF editor - handles the direct operations per keystroke, as well as loading to and from the RTF doc itself
 export default class RichTextEditor extends Component{
 	constructor(props){
 		super(props);
@@ -24,18 +25,12 @@ export default class RichTextEditor extends Component{
 		this.onEditorStateChange(EditorState.createWithContent(ContentState.createFromText(data)));
 	}
 
-
-	//todo
 	getPlainText = () => {
 		return this.state.editorState.getCurrentContent().getPlainText();
 	}
-	textToDb = () => {
-		// console.log("saving into database...");
-		// console.log(this.state.editorState.getCurrentContent().getPlainText());
 
-	}
 
-	//I used firebase for backend since its super easy to set up. I currently created my own firebase to test and i'll add you guys via email
+	//firebase for backend
 	queryAndLoad = () => {
 		firebase.firestore().collection("user_data")
 		.where("UID", "==", 1) //todo multi user support
@@ -52,7 +47,7 @@ export default class RichTextEditor extends Component{
 	}
 
 	//inter-component communication via ref
-	//rigged such that pressing button uploads stuff from firebase into the RTF doc itself
+	//rigged such that pressing button uploads data from firebase into the RTF doc itself
 	loadIntoRTF = (data) => {
 		//if loading overwrites whats on the RTF, alert for now
 		if(data !== this.getPlainText()){
@@ -61,7 +56,7 @@ export default class RichTextEditor extends Component{
 		}
 	};
 
-	//saves whatever in RTF box to database
+	//saves whatever is in RTF box to database
 	storeIntoDatabase = () => {
 		const plaintext = this.getPlainText();
 		firebase.firestore().collection("user_data")
@@ -78,7 +73,6 @@ export default class RichTextEditor extends Component{
 					Data : plaintext
 				})
 				.catch((e) => { console.log("error turing update op")});
-					//get [0] since theres only gonna be one
 			}
 		})
 		.catch((e) => { console.log("error during store func")
@@ -87,6 +81,7 @@ export default class RichTextEditor extends Component{
 		alert("Saved to Database");
 	}
 
+	//handles everytime the editor changes (ex. keystrokes)
 	onEditorStateChange = (editorState) => {
 		this.setState({editorState: editorState});
 	}
@@ -104,7 +99,7 @@ export default class RichTextEditor extends Component{
 				<div class="btn-group">
 					<button onClick={this.queryAndLoad}>Load from Database to RTF</button>
 					<button onClick={this.storeIntoDatabase}>Save from RTF into Database</button>
-					{/* <button onClick={this.generatePDF} type="primary">get your pdf</button> */}
+					<button onClick={this.generatePDF} type="primary">get your pdf</button>
 					
 				</div>
 			</div>
