@@ -35,11 +35,7 @@ export default class RichTextEditor extends Component{
 
 	}
 
-	//technically i should separate query and loading into the RTF doc, but idk how
-	//anyways, this queries the database, and then whatever comes out goes into the app's state
-	//then it shoves said data into the RTF itself
-
-	//also, partly cause this is a mockup/laziness I used firebase for backend since its super easy to set up. I currently created my own firebase to test and i'll add you guys via email
+	//I used firebase for backend since its super easy to set up. I currently created my own firebase to test and i'll add you guys via email
 	queryAndLoad = () => {
 		firebase.firestore().collection("user_data")
 		.where("UID", "==", 1) //todo multi user support
