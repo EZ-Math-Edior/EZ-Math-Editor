@@ -24,7 +24,7 @@
 
 .btn-group button {
 	background-color: #04AA6D; /* Green background */
-	border: 1px solid rgb(0, 0, 0); /* Green border */
+	border: 1px solid green; /* Green border */
 	color: white; /* White text */
 	/* Put the buttons starting on the bottom left of the screen*/
 	bottom:0; 

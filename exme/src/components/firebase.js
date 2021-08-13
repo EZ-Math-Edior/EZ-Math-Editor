@@ -2,6 +2,7 @@ import firebase from "firebase/app"
 import "firebase/auth"
 import "firebase/firestore";
 
+//handles the authentication to the back end
 const firebaseConfig = {
     apiKey: "AIzaSyBIZUh5JGnR3ZuHRHEH_-Scodkf7iHsTXE",
     authDomain: "ez-math-editor.firebaseapp.com",

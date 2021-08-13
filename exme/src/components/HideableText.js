@@ -1,5 +1,6 @@
 import React from 'react';
 
+//discontinued, kept for learning reasons
 export default class HideableText extends React.Component {
   constructor(props) {
     super(props);

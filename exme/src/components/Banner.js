@@ -1,6 +1,7 @@
 import React from 'react';
 import '../App.css';
 
+//The banner at the top of all our routes
 function Banner(){
 	return (
 		<nav className = "Home">

@@ -1,3 +1,4 @@
+//discontinued for now, kept atm for learning purposes
 class BoldText extends React.Component{
 	constructor(props){
 		super(props);

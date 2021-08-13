@@ -5,8 +5,6 @@ export default class DraggableField extends Component {
     //ref to:
     //https://github.com/bokuweb/react-rnd
     //this ver might have limitations regarding our specific needs- but can be used as a mockup for now
-    
-    //these are also useful but idk how to combine them together
     //https://github.com/react-grid-layout/react-resizable
     //https://github.com/react-grid-layout/react-draggable
 
@@ -26,7 +24,7 @@ export default class DraggableField extends Component {
     }
    
 
-    // these could technically be a single function but why not be explicit
+    //helper functions that handle the moving behavior of the text box
     onLock = () => {
         this.setState({
             draggable : false, 
@@ -58,9 +56,6 @@ export default class DraggableField extends Component {
 
         }
 
-        
-
-        
     };
 
 
