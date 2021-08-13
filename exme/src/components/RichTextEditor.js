@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef, useCallback  }from 'react';
 import '../App.css';
-import { Modifier, EditorState, ContentState } from 'draft-js';
-import { Editor } from 'react-draft-wysiwyg';
+import { saveAs } from 'file-saver';
+import { pdfExporter } from 'quill-to-pdf';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import firebase from './firebase';
 import "quill/dist/quill.snow.css"
@@ -85,8 +85,11 @@ export default function RichTextEditor() {
 		// alert("Saved to Database");
 	}
 
-	// useEffect(() => {
-	// }, []);
+	async function generatePDF ()  {
+		const delta = quill.getContents(); // gets the Quill delta
+		const pdfAsBlob = await pdfExporter.generatePdf(delta); // converts to PDF
+		saveAs(pdfAsBlob, 'pdf-export.pdf'); // downloads from the browser
+	}
 
 	//detect all text changes via listeners
 	//todo: add to presenation - observer pattern
@@ -129,7 +132,7 @@ export default function RichTextEditor() {
 			<div className="btn-group">
 				<button onClick={queryAndLoad}>Load from Database to RTF</button>
 				<button onClick={storeIntoDatabase}>Save from RTF into Database</button>
-				{/* <button onClick={this.generatePDF} type="primary">get your pdf</button> */}
+				<button onClick={generatePDF}>get your pdf</button>
 				
 			</div>
 		</div>
