@@ -5,7 +5,7 @@ import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import firebase from './firebase';
 import "quill/dist/quill.snow.css"
-import Quill from "quill"
+import Quill, { Delta } from "quill"
 
 
 //read docs for this, gives us everything for the toolbar options (set below)
@@ -24,7 +24,8 @@ const TOOLBAR_OPTIONS = [
 export default function RichTextEditor() {
 
 	const [quill, setQuill] = useState()
-	
+	// const [changes, setChanges] = useState()
+	// const changes = new Delta();
 	
 	//firebase for backend
 	function queryAndLoad () {
@@ -37,7 +38,7 @@ export default function RichTextEditor() {
 			//assume UIDs to be unique
 			//if querySnapshot isn't empty, then we found the ID
 			if(!querySnapshot.empty){ 
-				this.loadIntoRTF(querySnapshot.docs[0].data().Data); //get [0] since theres only gonna be one
+				loadIntoRTF(querySnapshot.docs[0].data().Data); //get [0] since theres only gonna be one
 			}
 		})
 		.catch((e) => { console.log("error during query and load func")
@@ -47,7 +48,8 @@ export default function RichTextEditor() {
 	//inter-component communication via ref
 	//rigged such that pressing button uploads data from firebase into the RTF doc itself
 	function loadIntoRTF (data)  {
-		console.log(data);
+		// console.log(data);
+		quill.setContents(JSON.parse(data));
 		//if loading overwrites whats on the RTF, alert for now
 		// if(data !== this.getPlainText()){
 
@@ -57,7 +59,9 @@ export default function RichTextEditor() {
 
 	//saves whatever is in RTF box to database
 	function storeIntoDatabase () {
-		const plaintext = this.getPlainText();
+		const data = JSON.stringify(quill.getContents());
+		console.log(data);
+
 		firebase.firestore().collection("user_data")
 		.where("UID", "==", 1) //todo multi user support
 		.get()
@@ -69,7 +73,7 @@ export default function RichTextEditor() {
 				firebase.firestore().collection("user_data")
 				.doc(querySnapshot.docs[0].id)
 				.update({
-					Data : plaintext
+					Data : data
 				})
 				.catch((e) => { console.log("error turing update op")});
 			}
@@ -80,41 +84,20 @@ export default function RichTextEditor() {
 		alert("Saved to Database");
 	}
 
-	//this does some magic honestly
-	//https://github.com/portexe/evernote-clone/blob/master/src/helpers.js
-	function debounce(a,b,c){
-		var d,e;
-		return function(){
-			function h(){
-			d=null;
-			c||(e=a.apply(f,g));
-			}
-			var f=this,g=arguments;
-			return (clearTimeout(d),d=setTimeout(h,b),c&&!d&&(e=a.apply(f,g)),e)
-		}
-	}
-
-	// function removeHTMLTags (str) {
-	// 	return str.replace(/<[^>]*>?/gm, '');
-	// };
-
-	const update = useCallback(
-		debounce(() => {
-			console.log('updating database!')
-		}, 1500),
-		[]
-	)
 
 	//detect all text changes via listeners
 	//todo: add to presenation - observer pattern
 	useEffect(() => {
+		if ( quill == null) return
+
 		//todo - figure out deltas
 		const handler = (delta, oldDelta, source) => { 
 			if (source !== 'user') return;
-			//ass delta here
+			console.log(delta);
+			// changes = changes.compose(delta);
 		}
 		quill.on('text-change', handler);
-
+	
 		return () => {
 			quill.off('text-change', handler);
 		}
@@ -131,7 +114,19 @@ export default function RichTextEditor() {
 		setQuill(q)
 	}, []) 
 
-	return <div className="container" ref= {wrapperRef}> </div>
+	return (
+		<div> 
+			<div className="container" ref= {wrapperRef}> </div>
+
+			<div class="btn-group">
+				<button onClick={queryAndLoad}>Load from Database to RTF</button>
+				<button onClick={storeIntoDatabase}>Save from RTF into Database</button>
+				{/* <button onClick={this.generatePDF} type="primary">get your pdf</button> */}
+				<button>placeholder</button>
+				
+			</div>
+		</div>
+	)
 }
 
 
