@@ -48,11 +48,11 @@ export default function RichTextEditor() {
 	//inter-component communication via ref
 	//rigged such that pressing button uploads data from firebase into the RTF doc itself
 	function loadIntoRTF (data)  {
-		console.log(data);
+		// console.log(data);
 		quill.setContents(JSON.parse(data));
 		//if loading overwrites whats on the RTF, alert for now
 		// if(data !== this.getPlainText()){
-			console.log(123);
+			// console.log(123);
 
 		// 	this.dbToText(data);
 		// }
@@ -82,7 +82,7 @@ export default function RichTextEditor() {
 		.catch((e) => { console.log("error during store func")
 		});
 		
-		alert("Saved to Database");
+		// alert("Saved to Database");
 	}
 
 	// useEffect(() => {
@@ -98,6 +98,7 @@ export default function RichTextEditor() {
 		const handler = (delta, oldDelta, source) => { 
 			if (source !== 'user') return;
 			console.log(delta);
+			storeIntoDatabase();
 			// changes = changes.compose(delta);
 		}
 		quill.on('text-change', handler);
@@ -106,7 +107,7 @@ export default function RichTextEditor() {
 			quill.off('text-change', handler);
 		}
 	}, [quill]) //only cakk if our quill state changes
-
+	
 	//as soon as div id container returns, it's gonna call useCallback and assign the wrapperRef
 	//aka our wrapper input is defined
 	const wrapperRef = useCallback((wrapper) => {
@@ -116,7 +117,6 @@ export default function RichTextEditor() {
 		wrapper.append(editor); //shove that new stuff into the wrapper
 		const q = new Quill(editor, { theme: "snow", modules: { toolbar: TOOLBAR_OPTIONS } }) 
 		setQuill(q)
-
 
 	}, []) 
 	queryAndLoad(); //so the set state has time to finish (setQuill op)
