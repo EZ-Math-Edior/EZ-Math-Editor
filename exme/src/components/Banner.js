@@ -1,5 +1,6 @@
 import React from 'react';
 import '../App.css';
+import '../styles.css'
 
 //The banner at the top of all our routes
 function Banner(){

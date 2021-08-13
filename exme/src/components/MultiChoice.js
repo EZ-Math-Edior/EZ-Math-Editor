@@ -2,7 +2,7 @@ import React, { Component  }from 'react';
 import './MultiChoice.css';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import firebase from './firebase';
-
+import Quill from 'quill';
 
 //the router that presents the multiple choice testing
 //handles a collection of questions and assesses the user
@@ -68,7 +68,11 @@ export default class MultiChoice extends Component{
 	
 	//stores all the questions into its array in state
 	parseQuestions = (data) => {
-		 data.split("\n").forEach( (elem) => {
+		console.log(data);
+		var content = JSON.parse(data).ops[0].insert;
+		console.log(content);
+
+		content.split("\n").forEach( (elem) => {
 			 let qSeg = elem.split(";;");
 			 if(qSeg.length > 3){
 				let prompt = "";
@@ -130,7 +134,7 @@ export default class MultiChoice extends Component{
 
 	render(){
 		return (
-			<div class = "content">
+			<div className = "content">
 				    <div className="Quiz">
 					<h1>{this.state.readyToDisplay && this.state.Questions[this.state.currQuestion].prompt}</h1>
 					<h2>{this.state.readyToDisplay && "chose: " + this.state.currOption} </h2>
@@ -157,7 +161,7 @@ export default class MultiChoice extends Component{
 						
 						</div>
 					</div>
-				<div class="btn-group">
+				<div className="btn-group">
 					<button onClick = {this.queryDB}> Load Test</button>
 					<button onClick = { () => {
 						this.props.history.push('/EZ-Math-Editor')

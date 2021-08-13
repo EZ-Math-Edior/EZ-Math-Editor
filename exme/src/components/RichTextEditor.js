@@ -130,7 +130,6 @@ export default function RichTextEditor() {
 				<button onClick={queryAndLoad}>Load from Database to RTF</button>
 				<button onClick={storeIntoDatabase}>Save from RTF into Database</button>
 				{/* <button onClick={this.generatePDF} type="primary">get your pdf</button> */}
-				<button>placeholder</button>
 				
 			</div>
 		</div>
