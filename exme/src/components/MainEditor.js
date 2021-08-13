@@ -10,7 +10,7 @@ export default class MainEditor extends Component{
 		return (
 			<div>
 				<RichTextEditor/>
-				<div class="btn-group">
+				<div className="btn-group">
 				<button onClick = { () => {
 						this.props.history.push('/EZ-Math-Tester')
 					}}> Switch to Test Mode</button>

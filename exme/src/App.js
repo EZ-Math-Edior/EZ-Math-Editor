@@ -36,7 +36,7 @@ class App extends React.PureComponent{
 		}
 		);
 	}
-
+	
 	// Convert text to latex
 	//this belongs in its own class
 	latexify = () => {
@@ -59,7 +59,7 @@ class App extends React.PureComponent{
 					<Route path="/EZ-Math-Editor" component = {MainEditor} />
 					<Route path="/EZ-Math-Tester" component = {MultiChoice} />
 				</Switch>
-				<div class="latex-group">
+				<div className="latex-group">
 					<label><br /><br /><br />Enter text to convert to LaTeX formula<br /></label>
 					<input type="text" name="latex" id="latex"/>
 					<button onClick={this.latexify}>Convert</button>

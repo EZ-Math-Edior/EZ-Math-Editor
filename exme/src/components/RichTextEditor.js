@@ -37,6 +37,7 @@ export default function RichTextEditor() {
 			//assume UIDs to be unique
 			//if querySnapshot isn't empty, then we found the ID
 			if(!querySnapshot.empty){ 
+				// console.log(querySnapshot.docs[0].data().Data)
 				loadIntoRTF(querySnapshot.docs[0].data().Data); //get [0] since theres only gonna be one
 			}
 		})
@@ -47,10 +48,11 @@ export default function RichTextEditor() {
 	//inter-component communication via ref
 	//rigged such that pressing button uploads data from firebase into the RTF doc itself
 	function loadIntoRTF (data)  {
-		// console.log(data);
+		console.log(data);
 		quill.setContents(JSON.parse(data));
 		//if loading overwrites whats on the RTF, alert for now
 		// if(data !== this.getPlainText()){
+			console.log(123);
 
 		// 	this.dbToText(data);
 		// }
@@ -83,9 +85,8 @@ export default function RichTextEditor() {
 		alert("Saved to Database");
 	}
 
-	useEffect(() => {
-		queryAndLoad();
-	}, []);
+	// useEffect(() => {
+	// }, []);
 
 	//detect all text changes via listeners
 	//todo: add to presenation - observer pattern
@@ -115,13 +116,17 @@ export default function RichTextEditor() {
 		wrapper.append(editor); //shove that new stuff into the wrapper
 		const q = new Quill(editor, { theme: "snow", modules: { toolbar: TOOLBAR_OPTIONS } }) 
 		setQuill(q)
+
+
 	}, []) 
+	queryAndLoad(); //so the set state has time to finish (setQuill op)
+
 
 	return (
 		<div> 
 			<div className="container" ref= {wrapperRef}> </div>
 
-			<div class="btn-group">
+			<div className="btn-group">
 				<button onClick={queryAndLoad}>Load from Database to RTF</button>
 				<button onClick={storeIntoDatabase}>Save from RTF into Database</button>
 				{/* <button onClick={this.generatePDF} type="primary">get your pdf</button> */}
