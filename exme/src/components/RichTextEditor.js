@@ -6,6 +6,7 @@ import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import firebase from './firebase';
 import "quill/dist/quill.snow.css"
 import Quill from "quill"
+import ReactQuill from 'react-quill';
 import katex from "katex";
 
 import "katex/dist/katex.css";
@@ -32,6 +33,118 @@ const TOOLBAR_OPTIONS = [
 	["clean"],
   ]
 
+export default class RichTextEditor extends React.Component {
+
+	constructor(props){
+		super(props);
+		this.quill = React.createRef();
+	}
+
+	componentDidMount(){
+		const enableMathQuillFormulaAuthoring = mathquill4quill({ Quill, katex });
+		enableMathQuillFormulaAuthoring(
+		  this.quill.current.editor,
+		  this.props.options
+		);
+		this.queryAndLoad();
+		
+	}
+
+	//firebase for backend
+	queryAndLoad = () => {
+		firebase
+		.firestore()
+		.collection("user_data")
+		.where("UID", "==", 1) //todo multi user support
+		.get()
+		.then((querySnapshot) => {
+			//assume UIDs to be unique
+			//if querySnapshot isn't empty, then we found the ID
+			if(!querySnapshot.empty){ 
+				// console.log(querySnapshot.docs[0].data().Data)
+				this.loadIntoRTF(querySnapshot.docs[0].data().Data); //get [0] since theres only gonna be one
+			}
+		})
+		.catch((e) => { console.log("error during query and load func")
+		});
+
+	}
+
+	//inter-component communication via ref
+	//rigged such that pressing button uploads data from firebase into the RTF doc itself
+	loadIntoRTF = (data) => {
+		console.log(data);
+		this.quill.current.editor.setContents(JSON.parse(data));
+	}
+
+	//saves whatever is in RTF box to database
+	storeIntoDatabase = () => {
+		const data = JSON.stringify( this.quill.current.editor.getContents());
+		// console.log(data);
+
+		firebase.firestore().collection("user_data")
+		.where("UID", "==", 1) //todo multi user support
+		.get()
+		.then((querySnapshot) => {
+			//assume UIDs to be unique
+			//if querySnapshot isn't empty, then we found the ID
+			if(!querySnapshot.empty){ 
+				// console.log(querySnapshot.docs[0].id);
+				firebase.firestore().collection("user_data")
+				.doc(querySnapshot.docs[0].id)
+				.update({
+					Data : data
+				})
+				.catch((e) => { console.log("error turing update op")});
+			}
+		})
+		.catch((e) => { console.log("error during store func")
+		});
+		
+		// alert("Saved to Database");
+	}
+
+	generatePDF = async () => {
+		const delta = this.quill.current.editor.getContents(); // gets the Quill delta
+		const pdfAsBlob = await pdfExporter.generatePdf(delta); // converts to PDF
+		saveAs(pdfAsBlob, 'pdf-export.pdf'); // downloads from the browser
+	}
+
+	//extremely inneficient - saves at every change
+	onEditorUpdate = () => {
+		this.storeIntoDatabase();
+		console.log("saved");
+	}
+
+	render() {
+		return (
+			<div> 
+				<div className="container"> 
+					<ReactQuill
+						ref = {this.quill}
+						id="editor"
+						modules={{
+							formula: true,
+							toolbar: TOOLBAR_OPTIONS
+						}}
+						theme="snow"
+						onChange={this.onEditorUpdate}
+					/>
+				</div>
+
+				<div className="btn-group">
+					<button onClick={this.queryAndLoad}>Load from Database to RTF</button>
+					<button onClick={this.storeIntoDatabase}>Save from RTF into Database</button>
+					{/* <button onClick={wipeData}>Wipe Data</button> */}
+					<button onClick={this.generatePDF}>get your pdf</button> 
+					
+				</div>
+			</div>
+		)
+	}
+}
+
+  /*
 export default function RichTextEditor() {
 
 	const [quill, setQuill] = useState(null)
@@ -197,4 +310,4 @@ export default function RichTextEditor() {
 	)
 }
 
-
+ */
