@@ -38,6 +38,10 @@ export default class RichTextEditor extends React.Component {
 	constructor(props){
 		super(props);
 		this.quill = React.createRef();
+
+		this.state = {
+			id : ''
+		}
 	}
 
 	componentDidMount(){
@@ -111,10 +115,12 @@ export default class RichTextEditor extends React.Component {
 	}
 
 	//extremely inneficient - saves at every change
-	onEditorUpdate = () => {
-		this.storeIntoDatabase();
+	onEditorUpdate = debounce( () => {
 		console.log("saved");
-	}
+		this.storeIntoDatabase();
+	}, 1500);
+		
+	
 
 	render() {
 		return (
@@ -143,6 +149,19 @@ export default class RichTextEditor extends React.Component {
 		)
 	}
 }
+
+	//https://github.com/portexe/evernote-clone/blob/master/src/helpers.js
+	export function debounce (a,b,c) { //cancels a function everytime deboucne is called, until a window of time is long enough
+		var d,e;
+		return function(){
+		  function h(){
+			d=null;
+			c||(e=a.apply(f,g));
+		  }
+		  var f=this,g=arguments;
+		  return (clearTimeout(d),d=setTimeout(h,b),c&&!d&&(e=a.apply(f,g)),e)
+		}
+	  }
 
   /*
 export default function RichTextEditor() {

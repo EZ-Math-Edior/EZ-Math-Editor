@@ -35,8 +35,30 @@
   }
 
   
-  /* #content {
-    width : 595px;
-    height: 842px;
-    
+  html, body {
+	height: 100%;
+	width: 100%;
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+  }
+
+  /* #evernote-container {
+	height: 100%;
+	box-sizing: border-box;
   } */
+  .app-container {
+	height: 100%;
+	box-sizing: border-box;
+  }
+
+  .MuiListItem-root.Mui-selected {
+	background-color: #d4d8e8 !important;
+  }
+  .no-note-selected {
+	font-size: 48px;
+	position: absolute;
+	top: 50px;
+	left: calc(50% - 165px);
+  }
