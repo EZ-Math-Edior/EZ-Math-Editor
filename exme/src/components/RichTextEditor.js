@@ -5,8 +5,19 @@ import { pdfExporter } from 'quill-to-pdf';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import firebase from './firebase';
 import "quill/dist/quill.snow.css"
-import Quill, { Delta } from "quill"
+import Quill from "quill"
+import katex from "katex";
+// window.katex = katex;
 
+import "katex/dist/katex.css";
+
+
+import "./jquery";
+// import "mathquill/build/mathquill.js";
+import "mathquill/build/mathquill.css";
+
+import mathquill4quill from "mathquill4quill";
+import "mathquill4quill/mathquill4quill.css";
 
 //read docs for this, gives us everything for the toolbar options (set below)
 const TOOLBAR_OPTIONS = [
@@ -18,6 +29,7 @@ const TOOLBAR_OPTIONS = [
 	[{ script: "sub" }, { script: "super" }],
 	[{ align: [] }],
 	["image", "blockquote", "code-block"],
+	['formula'],
 	["clean"],
   ]
 
@@ -58,6 +70,31 @@ export default function RichTextEditor() {
 		// }
 	};
 
+	function wipeData () {
+
+		firebase.firestore().collection("user_data")
+		.where("UID", "==", 1) //todo multi user support
+		.get()
+		.then((querySnapshot) => {
+			//assume UIDs to be unique
+			//if querySnapshot isn't empty, then we found the ID
+			if(!querySnapshot.empty){ 
+				console.log(querySnapshot.docs[0].id);
+				firebase.firestore().collection("user_data")
+				.doc(querySnapshot.docs[0].id)
+				.update({
+					Data : "test"
+				})
+				.catch((e) => { console.log("error turing update op")});
+			}
+		})
+		.catch((e) => { console.log("error during store func")
+		});
+
+		window.location.reload();
+
+	}
+
 	//saves whatever is in RTF box to database
 	function storeIntoDatabase () {
 		const data = JSON.stringify(quill.getContents());
@@ -91,7 +128,7 @@ export default function RichTextEditor() {
 		saveAs(pdfAsBlob, 'pdf-export.pdf'); // downloads from the browser
 	}
 
-	//detect all text changes via listeners
+	//detect all changes to quill var via listeners
 	//todo: add to presenation - observer pattern
 	//for now, not used
 	useEffect(() => {
@@ -111,6 +148,9 @@ export default function RichTextEditor() {
 		}
 	}, [quill]) //only cakk if our quill state changes
 	
+
+
+	//our on component mount
 	//as soon as div id container returns, it's gonna call useCallback and assign the wrapperRef
 	//aka our wrapper input is defined
 	const wrapperRef = useCallback((wrapper) => {
@@ -118,12 +158,13 @@ export default function RichTextEditor() {
 		wrapper.innerHTML = '' //resets our rendered elements
 		const editor = document.createElement('div') //create a new div
 		wrapper.append(editor); //shove that new stuff into the wrapper
-		const q = new Quill(editor, { theme: "snow", modules: { toolbar: TOOLBAR_OPTIONS } }) 
+		const q = new Quill(editor, { theme: "snow", formula: true, modules: { toolbar: TOOLBAR_OPTIONS } }) 
 		setQuill(q)
-
+		var enableMathQuillFormulaAuthoring = mathquill4quill();
+		enableMathQuillFormulaAuthoring(q);
 	}, []) 
 	queryAndLoad(); //so the set state has time to finish (setQuill op)
-
+	
 
 	return (
 		<div> 
@@ -132,6 +173,7 @@ export default function RichTextEditor() {
 			<div className="btn-group">
 				<button onClick={queryAndLoad}>Load from Database to RTF</button>
 				<button onClick={storeIntoDatabase}>Save from RTF into Database</button>
+				<button onClick={wipeData}>Wipe Data</button>
 				<button onClick={generatePDF}>get your pdf</button>
 				
 			</div>
