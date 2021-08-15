@@ -1,5 +1,7 @@
 import React, { Component  }from 'react';
-import '../styles.css';
+// import '../styles.css';
+import '../App.css';
+
 import RichTextEditor from './RichTextEditor';
 import Sidebar from './hierarchy/sidebar';
 import SidebarItem from './hierarchy/sidebarItem';
@@ -34,13 +36,28 @@ export default class MainEditor extends Component{
 		
 	}
 
+	selectNote = () => {
+
+	}
+
+	deleteNote = () => {
+
+	}
+
+	createNote = () => {
+		
+	}
+
 	render(){
 		return (
 			<div>
-				{/* <Sidebar
+				<Sidebar
 					selectedNoteIndex = {this.state.selectedNoteIndex}
 					notes = {this.state.notes}
-				/> */}
+					selectNote = {this.selectNote}
+					deleteNote = {this.deleteNote}
+					createNote = {this.createNote}
+				/>
 				<RichTextEditor/>
 				<div className="btn-group">
 				<button onClick = { () => {
