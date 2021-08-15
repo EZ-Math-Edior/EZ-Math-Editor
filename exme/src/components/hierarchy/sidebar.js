@@ -22,7 +22,7 @@ class Sidebar extends React.Component {
     }
 
     createNote = () => {
-        console.log(this.state);
+        this.props.selectNote();
     }
 
     updateTitle = (txt) => {
@@ -30,12 +30,12 @@ class Sidebar extends React.Component {
     }
 
     selectNote = (note, index) => {
-        console.log("select")
+        this.props.selectNote(note, index);
     }
 
     deleteNote = (note) => {
  
-        console.log("delete")
+        this.props.deleteNote(note);
 
     }
 

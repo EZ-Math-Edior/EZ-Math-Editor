@@ -36,16 +36,16 @@ export default class MainEditor extends Component{
 		
 	}
 
-	selectNote = () => {
-
+	selectNote = (note, index) => {
+		this.setState({selectedNoteIndex : index, selectedNote : note});
 	}
 
-	deleteNote = () => {
+	deleteNote = (note) => {
 
 	}
 
 	createNote = () => {
-		
+
 	}
 
 	render(){
@@ -58,7 +58,13 @@ export default class MainEditor extends Component{
 					deleteNote = {this.deleteNote}
 					createNote = {this.createNote}
 				/>
-				<RichTextEditor/>
+				{this.state.selectedNote ? 
+				<RichTextEditor
+					selectedNoteIndex={this.state.selectedNoteIndex}
+					selectedNote={this.state.selectedNote}
+					notes={this.state.notes}/>
+				: null
+				}
 				<div className="btn-group">
 				<button onClick = { () => {
 						this.props.history.push('/EZ-Math-Tester')

@@ -54,8 +54,15 @@ export default class RichTextEditor extends React.Component {
 		
 	}
 
+	componentDidUpdate(){
+		if(this.props.selectedNote.id !== this.state.id){
+			console.log("switching note");
+			this.queryAndLoad();
+		}
+	}
+
 	//firebase for backend
-	queryAndLoad = () => {
+	queryAndLoad = (id) => {
 		firebase
 		.firestore()
 		.collection("user_data")
