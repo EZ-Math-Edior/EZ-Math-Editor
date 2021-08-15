@@ -2,7 +2,7 @@ import React, { Component  }from 'react';
 import './MultiChoice.css';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import firebase from './firebase';
-import Quill from 'quill';
+// import Quill from 'quill';
 
 //the router that presents the multiple choice testing
 //handles a collection of questions and assesses the user

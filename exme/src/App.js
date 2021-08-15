@@ -19,10 +19,10 @@ Components and sections of our design are separated through the react-router-dom
 var tex = ""
 
 class App extends React.PureComponent{
-	constructor(props){
-		super(props);		
+	// constructor(props){
+	// 	super(props);		
 		
-	}
+	// }
 
 
 	// generate pdf function

@@ -2,7 +2,7 @@ import React, { Component  }from 'react';
 import '../App.css';
 import RichTextEditor from './RichTextEditor';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-import DraggableField from './DraggableField'
+// import DraggableField from './DraggableField'
 
 //wraps rtf such that the button groups are organized by hierarchies
 export default class MainEditor extends Component{

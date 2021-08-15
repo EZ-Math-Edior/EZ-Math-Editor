@@ -7,17 +7,16 @@ import firebase from './firebase';
 import "quill/dist/quill.snow.css"
 import Quill from "quill"
 import katex from "katex";
-// window.katex = katex;
 
 import "katex/dist/katex.css";
 
-
 import "./jquery";
-// import "mathquill/build/mathquill.js";
+import "mathquill/build/mathquill.js";
 import "mathquill/build/mathquill.css";
 
 import mathquill4quill from "mathquill4quill";
 import "mathquill4quill/mathquill4quill.css";
+window.katex = katex;
 
 //read docs for this, gives us everything for the toolbar options (set below)
 const TOOLBAR_OPTIONS = [
@@ -35,9 +34,9 @@ const TOOLBAR_OPTIONS = [
 
 export default function RichTextEditor() {
 
-	const [quill, setQuill] = useState()
+	const [quill, setQuill] = useState(null)
+	const [loaded, setLoaded] = useState(false)
 
-	
 	//firebase for backend
 	function queryAndLoad () {
 		firebase
@@ -55,17 +54,18 @@ export default function RichTextEditor() {
 		})
 		.catch((e) => { console.log("error during query and load func")
 		});
+
 	}
 
 	//inter-component communication via ref
 	//rigged such that pressing button uploads data from firebase into the RTF doc itself
 	function loadIntoRTF (data)  {
-		// console.log(data);
+		console.log(data);
+		
 		quill.setContents(JSON.parse(data));
 		//if loading overwrites whats on the RTF, alert for now
 		// if(data !== this.getPlainText()){
 			// console.log(123);
-
 		// 	this.dbToText(data);
 		// }
 	};
@@ -98,7 +98,7 @@ export default function RichTextEditor() {
 	//saves whatever is in RTF box to database
 	function storeIntoDatabase () {
 		const data = JSON.stringify(quill.getContents());
-		console.log(data);
+		// console.log(data);
 
 		firebase.firestore().collection("user_data")
 		.where("UID", "==", 1) //todo multi user support
@@ -107,7 +107,7 @@ export default function RichTextEditor() {
 			//assume UIDs to be unique
 			//if querySnapshot isn't empty, then we found the ID
 			if(!querySnapshot.empty){ 
-				console.log(querySnapshot.docs[0].id);
+				// console.log(querySnapshot.docs[0].id);
 				firebase.firestore().collection("user_data")
 				.doc(querySnapshot.docs[0].id)
 				.update({
@@ -137,7 +137,7 @@ export default function RichTextEditor() {
 		//todo - figure out deltas
 		const handler = (delta, oldDelta, source) => { 
 			if (source !== 'user') return;
-			console.log(delta);
+			// console.log(delta);
 			storeIntoDatabase();
 			// changes = changes.compose(delta);
 		}
@@ -149,6 +149,15 @@ export default function RichTextEditor() {
 	}, [quill]) //only cakk if our quill state changes
 	
 
+	// function asdf(q){
+	// 	setQuill(q)
+	// 	setLoaded(true)
+	// 	while(quill === null && loaded === false){
+	// 		console.log("idk");
+	// 	}
+		
+	// 	queryAndLoad()
+	// }
 
 	//our on component mount
 	//as soon as div id container returns, it's gonna call useCallback and assign the wrapperRef
@@ -160,11 +169,18 @@ export default function RichTextEditor() {
 		wrapper.append(editor); //shove that new stuff into the wrapper
 		const q = new Quill(editor, { theme: "snow", formula: true, modules: { toolbar: TOOLBAR_OPTIONS } }) 
 		setQuill(q)
-		var enableMathQuillFormulaAuthoring = mathquill4quill();
-		enableMathQuillFormulaAuthoring(q);
+		
+		console.log("rtf mounted")
 	}, []) 
-	queryAndLoad(); //so the set state has time to finish (setQuill op)
+	queryAndLoad();
 	
+	// useEffect( () => {
+	// 	queryAndLoad()
+	// }, [])
+
+	 //so the set state has time to finish (setQuill op)
+	// var enableMathQuillFormulaAuthoring = mathquill4quill();
+	// enableMathQuillFormulaAuthoring(quill);
 
 	return (
 		<div> 
