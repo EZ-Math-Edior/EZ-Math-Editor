@@ -28,7 +28,7 @@ class SidebarItem extends React.Component {
                     alignItems="flex-start">
                     <div className={classes.textSection}
                         onClick={()=>this.selectNote(note, index)}>
-                            {note.title}
+                            {note.title} {/*note.body for debug */}
                     </div>
                     <DeleteIcon 
                         className={classes.deleteIcon}

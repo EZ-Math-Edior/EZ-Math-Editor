@@ -41,7 +41,7 @@ export default class RichTextEditor extends React.Component {
 		this.quill = React.createRef();
 
 		this.state = {
-			id : ''
+			id : '',
 		}
 	}
 
@@ -57,6 +57,9 @@ export default class RichTextEditor extends React.Component {
 		
 	}
 
+	componentWillUnmount(){
+		this.storeIntoDatabase();
+	}
 	componentDidUpdate(){
 		if(this.props.selectedNote.id !== this.state.id){
 			console.log("switching note");
@@ -139,6 +142,7 @@ export default class RichTextEditor extends React.Component {
 						}}
 						theme="snow"
 						onChange={this.onEditorUpdate}
+						
 					/>
 				</div>
 
