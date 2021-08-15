@@ -24,6 +24,7 @@ class Sidebar extends React.Component {
         const {notes, classes, selectedNoteIndex } = this.props
 
         return ( //classes.sidbarContainer associates div with sidebarStyles
+            // <div/>
             <div className={classes.sidebarContainer}> 
             <Button onClick={this.createNote}
                     className ={classes.newNoteBtn}>

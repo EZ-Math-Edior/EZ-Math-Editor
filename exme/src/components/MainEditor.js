@@ -37,10 +37,10 @@ export default class MainEditor extends Component{
 	render(){
 		return (
 			<div>
-				<Sidebar
+				{/* <Sidebar
 					selectedNoteIndex = {this.state.selectedNoteIndex}
 					notes = {this.state.notes}
-				/>
+				/> */}
 				<RichTextEditor/>
 				<div className="btn-group">
 				<button onClick = { () => {
