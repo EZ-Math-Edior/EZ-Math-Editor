@@ -40,8 +40,9 @@ export default class MainEditor extends Component{
 		this.setState({selectedNoteIndex : index, selectedNote : note});
 	}
 
-	deleteNote = (note) => {
+	deleteNote = async  (note) => {
 		const noteIndex = this.state.notes.indexOf(note);
+		await this.setState({notes: this.state.notes.filter(n => note !== n) });
 		if(this.state.selectedNoteIndex === noteIndex){
 			this.setState({ selectedNoteIndex: null, selectedNote: null})
 		} else {
