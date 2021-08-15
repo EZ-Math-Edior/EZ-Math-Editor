@@ -17,6 +17,7 @@ import "mathquill/build/mathquill.css";
 
 import mathquill4quill from "mathquill4quill";
 import "mathquill4quill/mathquill4quill.css";
+import { ContactlessOutlined } from '@material-ui/icons';
 window.katex = katex;
 
 //read docs for this, gives us everything for the toolbar options (set below)
@@ -50,36 +51,44 @@ export default class RichTextEditor extends React.Component {
 		  this.quill.current.editor,
 		  this.props.options
 		);
-		this.queryAndLoad();
+		this.setState({
+			id : this.props.selectedNote.id
+		}, () => { this.queryAndLoad() } )
 		
 	}
 
 	componentDidUpdate(){
 		if(this.props.selectedNote.id !== this.state.id){
 			console.log("switching note");
-			this.queryAndLoad();
+			this.setState({
+				id : this.props.selectedNote.id
+			}, () => { this.queryAndLoad() } )
+			
 		}
 	}
 
+
 	//firebase for backend
-	queryAndLoad = (id) => {
+	queryAndLoad = () => {
+		console.log(this.props.selectedNote.id);
 		firebase
-		.firestore()
-		.collection("user_data")
-		.where("UID", "==", 1) //todo multi user support
-		.get()
-		.then((querySnapshot) => {
-			//assume UIDs to be unique
-			//if querySnapshot isn't empty, then we found the ID
-			if(!querySnapshot.empty){ 
-				// console.log(querySnapshot.docs[0].data().Data)
-				this.loadIntoRTF(querySnapshot.docs[0].data().Data); //get [0] since theres only gonna be one
-			}
-		})
-		.catch((e) => { console.log("error during query and load func")
-		});
+			.firestore()
+			.collection("notes")
+			.doc(this.props.selectedNote.id)
+			.get()
+			.then((doc) => {
+				if(doc.exists){
+				this.loadIntoRTF(doc.data().body); //get [0] since theres only gonna be one
+					
+				} else{
+					console.log("no data found");
+				}
+			})
+			.catch((e) => { console.log("error during query and load func")
+			});
 
 	}
+	
 
 	//inter-component communication via ref
 	//rigged such that pressing button uploads data from firebase into the RTF doc itself
@@ -92,28 +101,16 @@ export default class RichTextEditor extends React.Component {
 	storeIntoDatabase = () => {
 		const data = JSON.stringify( this.quill.current.editor.getContents());
 		// console.log(data);
+		firebase
+		.firestore()
+		.collection("notes")
+		.doc(this.props.selectedNote.id)
+		.update({
+			body : data
+		}).catch((e) => { console.log("error turing update op")});
 
-		firebase.firestore().collection("user_data")
-		.where("UID", "==", 1) //todo multi user support
-		.get()
-		.then((querySnapshot) => {
-			//assume UIDs to be unique
-			//if querySnapshot isn't empty, then we found the ID
-			if(!querySnapshot.empty){ 
-				// console.log(querySnapshot.docs[0].id);
-				firebase.firestore().collection("user_data")
-				.doc(querySnapshot.docs[0].id)
-				.update({
-					Data : data
-				})
-				.catch((e) => { console.log("error turing update op")});
-			}
-		})
-		.catch((e) => { console.log("error during store func")
-		});
-		
-		// alert("Saved to Database");
 	}
+
 
 	generatePDF = async () => {
 		const delta = this.quill.current.editor.getContents(); // gets the Quill delta
