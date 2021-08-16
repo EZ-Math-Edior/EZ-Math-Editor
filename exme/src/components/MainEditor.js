@@ -78,6 +78,8 @@ export default class MainEditor extends Component{
 		this.setState({ selectedNote: this.state.notes[newNoteIndex], seslectedNoteIndex: newNoteIndex });
 	}
 
+
+
 	render(){
 		return (
 			<div>
@@ -96,9 +98,9 @@ export default class MainEditor extends Component{
 				: null
 				}
 				<div className="btn-group">
-				<button onClick = { () => {
-						this.props.history.push('/EZ-Math-Tester')
-					}}> Switch to Test Mode</button>
+					<button onClick = { () => {
+							this.props.history.push('/EZ-Math-Tester')
+						}}> Switch to Test Mode</button>
 				</div>
 				
 

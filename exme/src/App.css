@@ -33,3 +33,8 @@
 	  cursor: pointer; /* Pointer/hand icon */
 	  float: left; /* Float the buttons side by side */
 	}
+
+	.btn-group button:hover {
+		background-color: #1b3421;
+	  }
+	  

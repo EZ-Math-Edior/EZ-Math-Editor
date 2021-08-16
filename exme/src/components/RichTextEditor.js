@@ -127,6 +127,24 @@ export default class RichTextEditor extends React.Component {
 		this.storeIntoDatabase();
 	}, 1500);
 		
+	publishTest = async () => {
+		var title =  prompt("Enter Test Name", "");
+		const data = JSON.stringify( this.quill.current.editor.getContents());
+
+		const test = {
+			title: title,
+			body: data
+		};
+		const newFromDB = await firebase
+				.firestore()
+				.collection("tests")
+				.add({
+					title: test.title,
+					body: test.body,
+				});
+		const newID = newFromDB.id;
+		alert("TEST KEY: " + newID);
+	}
 	
 
 	render() {
@@ -147,11 +165,9 @@ export default class RichTextEditor extends React.Component {
 				</div>
 
 				<div className="btn-group">
-					<button onClick={this.queryAndLoad}>Load from Database to RTF</button>
-					<button onClick={this.storeIntoDatabase}>Save from RTF into Database</button>
-					{/* <button onClick={wipeData}>Wipe Data</button> */}
 					<button onClick={this.generatePDF}>get your pdf</button> 
-					
+					<button onClick = { this.publishTest}> Publish Test</button>
+
 				</div>
 			</div>
 		)

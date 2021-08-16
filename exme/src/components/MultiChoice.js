@@ -2,8 +2,7 @@ import React, { Component  }from 'react';
 import './MultiChoice.css';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import firebase from './firebase';
-// import Quill from 'quill';
-
+import  MathJax from 'react-mathjax';
 //the router that presents the multiple choice testing
 //handles a collection of questions and assesses the user
 //data on these questions are pulled directly from the back end
@@ -98,22 +97,29 @@ export default class MultiChoice extends Component{
 
 	}
 
-	//goes through the backend and gathers all the question data
-	queryDB = () => {
-		this.flushData();
-		console.log("querying");
-		firebase.firestore().collection("user_data")
-		.where("UID", "==", 1) //todo multi user support
-		.get()
-		.then((querySnapshot) => {
-			//assume UIDs to be unique
-			//if querySnapshot isn't empty, then we found the ID
-			if(!querySnapshot.empty){ 
-				this.parseQuestions(querySnapshot.docs[0].data().Data); //get [0] since theres only gonna be one
-			}
-		})
-		.catch((e) => { console.log("error during query and load func")
-		});
+	queryTestDB = () => {
+		var key = prompt("Enter test key: ");
+		firebase
+			.firestore()
+			.collection("tests")
+			.doc(key)
+			.get()
+			.then((doc) => {
+				if(doc.exists){
+					this.testSetup(doc.data().title, doc.data().body); //get [0] since theres only gonna be one
+
+				} else{
+					console.log("no data found");
+				}
+			})
+			.catch((e) => { console.log("error during query and load func")
+			});
+
+	}
+
+	testSetup = (title, body) => {
+		console.log(title);
+		console.log(body);
 	}
 
 	//adds a question to the question container
@@ -134,41 +140,48 @@ export default class MultiChoice extends Component{
 
 	render(){
 		return (
-			<div className = "content">
-				    <div className="Quiz">
-					<h1>{this.state.readyToDisplay && this.state.Questions[this.state.currQuestion].prompt}</h1>
-					<h2>{this.state.readyToDisplay && "chose: " + this.state.currOption} </h2>
-						 <div className="q-group">
-						 {this.state.readyToDisplay && this.state.Questions[this.state.currQuestion].choices.map( (q, i) => { //for each choice, display a question
-							 return (<button 
-								key= {i}
-							 	onClick={() => {
-									 this.chooseOption(q);
-								 }}>
-									 {q}
-								 </button>)
-						 })}
-							
-						{this.state.readyToDisplay && this.state.currQuestion === this.state.Questions.length - 1 ? (
-							<button onClick={this.finishQuiz} id="nextQuestion">
-							Finish Quiz
-							</button>
-						) : this.state.readyToDisplay && this.state.currQuestion != this.state.Questions.length - 1 ? (
-							<button onClick={this.nextQuestion} id="nextQuestion">
-							Next Question
-							</button>
-						) :  ""}
-						
-						</div>
-					</div>
-				<div className="btn-group">
-					<button onClick = {this.queryDB}> Load Test</button>
-					<button onClick = { () => {
-						this.props.history.push('/EZ-Math-Editor')
-					}}> Switch to Editor Mode</button>
-
-				</div>
+			<div>
+				
+				hello testing
+				<MathJax.Provider>
+					<MathJax.Node  inline formula={'a = b'} />
+				</MathJax.Provider>
 			</div>
+			// <div className = "content">
+			// 	    <div className="Quiz">
+			// 		<h1>{this.state.readyToDisplay && this.state.Questions[this.state.currQuestion].prompt}</h1>
+			// 		<h2>{this.state.readyToDisplay && "chose: " + this.state.currOption} </h2>
+			// 			 <div className="q-group">
+			// 			 {this.state.readyToDisplay && this.state.Questions[this.state.currQuestion].choices.map( (q, i) => { //for each choice, display a question
+			// 				 return (<button 
+			// 					key= {i}
+			// 				 	onClick={() => {
+			// 						 this.chooseOption(q);
+			// 					 }}>
+			// 						 {q}
+			// 					 </button>)
+			// 			 })}
+							
+			// 			{this.state.readyToDisplay && this.state.currQuestion === this.state.Questions.length - 1 ? (
+			// 				<button onClick={this.finishQuiz} id="nextQuestion">
+			// 				Finish Quiz
+			// 				</button>
+			// 			) : this.state.readyToDisplay && this.state.currQuestion != this.state.Questions.length - 1 ? (
+			// 				<button onClick={this.nextQuestion} id="nextQuestion">
+			// 				Next Question
+			// 				</button>
+			// 			) :  ""}
+						
+			// 			</div>
+			// 		</div>
+			// 	<div className="btn-group">
+			// 		<button onClick = {this.queryDB}> Load Test</button>
+			// 		<button onClick = { () => {
+			// 			this.props.history.push('/EZ-Math-Editor')
+			// 		}}> Switch to Editor Mode</button>
+
+			// 	</div>
+			// </div>
 
 		)
 	}
