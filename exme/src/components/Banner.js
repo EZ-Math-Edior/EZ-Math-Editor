@@ -6,7 +6,7 @@ import '../index.css'
 function Banner(){
 	return (
 		<nav className = "Home">
-			<h1>EZ Math Editor</h1>
+			<h1>EZ-Math Editor</h1>
 		</nav>
 	)
 }

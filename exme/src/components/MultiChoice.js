@@ -88,23 +88,23 @@ export default class MultiChoice extends Component{
 	//for now don't support formulas
 	//yQiP6IOm4rdyhE2RCXBv
 	parseQuestions = (data) => {
-		// console.log(data);
-		// var arr = JSON.parse(data).ops.map(ins => {
-		// 	return ins.insert;
+		console.log(data);
+		var arr = JSON.parse(data).ops.map(ins => {
+			return ins.insert;
 
-		// }); //list of inserts
+		}); //list of inserts
 		
-		// var content = "";
-		// arr.forEach(elem => {
-		// 	// console.log(elem);
-		// 	if(!elem.formula){
-		// 		content += elem;
-		// 	} else {
-		// 		console.log(elem);
-		// 	}
-		// })
+		var content = "";
+		arr.forEach(elem => {
+			// console.log(elem);
+			if(!elem.formula){
+				content += elem;
+			} else {
+				console.log(elem);
+			}
+		})
 
-		const content = JSON.parse(data).ops[0].insert
+		// const content = JSON.parse(data).ops[0].insert
 		console.log(content)
 		content.split("\n").forEach( (elem) => {
 			console.log(elem)
@@ -205,8 +205,8 @@ export default class MultiChoice extends Component{
 					 				<div className="question-text">{this.state.questions[this.state.currQuestion].prompt}</div>
 					 			</div>
 					 			<div className='answer-section'>
-					 				{this.state.questions[this.state.currQuestion].choices.map((answerOption) => (
-					 					<div class = 'btnwrap' >
+					 				{this.state.questions[this.state.currQuestion].choices.map((answerOption, i) => (
+					 					<div class = 'btnwrap' key = {i} >
 										 <button onClick={() => this.onAnswerChosen(answerOption.isCorrect)}>{answerOption.answerText}</button>
 										</div>
 								 	))}
