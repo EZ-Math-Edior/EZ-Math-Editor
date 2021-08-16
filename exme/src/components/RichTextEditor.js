@@ -168,8 +168,8 @@ export default class RichTextEditor extends React.Component {
 				/>
 		
 				<div className="btn-group">
-					<button onClick={this.generatePDF}>get your pdf</button> 
-					<button onClick = { this.publishTest}> Publish Test</button>
+					<button onClick = {this.generatePDF}>get your pdf</button> 
+					<button onClick = {this.publishTest}> Publish Test</button>
 				</div>
 			</div>
 		)

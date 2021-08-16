@@ -1,6 +1,6 @@
   
   .start-button button{
-	background-color: #aa0404; /* Green background */
+	background-color: #c72b2b; /* Green background */
 	border: 1px solid green; /* Green border */
 	color: white; /* White text */
 	/* Put the buttons starting on the bottom left of the screen*/
@@ -110,7 +110,7 @@
 	  }
 	  
 	  .answer-section button:hover {
-		background-color: #1b3421;
+		background-color: #4cce71;
 	  }
 
 	  .correct {
