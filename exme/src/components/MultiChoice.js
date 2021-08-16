@@ -12,59 +12,39 @@ export default class MultiChoice extends Component{
 
 		this.state = {
 			currQuestion : 0,
-			currOption : "",
 			currScore : 0,
-			Questions : [],
-			readyToDisplay : false
+			startedTest : false,
+			finishedTest : false,
+			questions : []
 		};
 	}
 
-	//helper functions handle quiz logic
-	//option refers to the content of the q itself
-	flushData = () => {
-		this.setState( {
-			currQuestion : 0,
-			currOption : "",
-			currScore : 0,
-			Questions : [],
-			readyToDisplay : false
-		} );
+
+	onAnswerChosen = (isCorrect) => {
+		if(isCorrect){
+			const oldScore = this.state.currScore;
+			this.setState({currScore: oldScore+1})
+		}
+
+		const nextQuestion = this.state.currQuestion + 1;
+		if(nextQuestion < this.state.questions.length) {
+			this.setState({currQuestion : nextQuestion})
+		} else {
+			this.setState({finishedTest : true}, () => {
+				this.onTestFinish();
+			})
+		}
+	}
+
+	onTestFinish = () => {
 
 	}
 
-	chooseOption = (option) => {
-		// console.log("chose " + option);
-		this.setState( {currOption : option} );
+	onTestInit = () => {
+		this.queryTestDB();
+		// this.setState({startedTest : true});
 	}
 
-	nextQuestion = () => {
-		if (this.state.currOption === this.state.Questions[this.state.currQuestion].answer){
-			console.log("right");
-			this.incScore();
-		} 
-		let newQuestion = this.state.currQuestion + 1;
-		this.setState({currQuestion : newQuestion});
-		this.chooseOption("");
-
-	}
-
-	finishQuiz = () => {
-		if (this.state.currOption === this.state.Questions[this.state.currQuestion].answer){
-			console.log("right");
-			this.incScore();
-		}		
-		console.log(this.state.currOption === this.state.Questions[this.state.currQuestion].answer)
-		this.chooseOption(this.state.currOption);
-		let newQuestion = this.state.currQuestion + 1;
-		this.setState({currQuestion : newQuestion, readyToDisplay : false},() => {alert("you scored " + this.state.currScore + " out of " + this.state.Questions.length);} );
-
-	}
-
-	incScore = () => {
-		let newScore = this.state.currScore+1;
-		this.setState({currScore : newScore});
-	}
-	
 	//stores all the questions into its array in state
 	parseQuestions = (data) => {
 		console.log(data);
@@ -99,6 +79,7 @@ export default class MultiChoice extends Component{
 
 	queryTestDB = () => {
 		var key = prompt("Enter test key: ");
+		if(!key) return;
 		firebase
 			.firestore()
 			.collection("tests")
@@ -138,15 +119,46 @@ export default class MultiChoice extends Component{
 	}
 
 
+
 	render(){
 		return (
-			<div>
+			<div className = "mcapp">
+				{this.state.startedTest ? (
+					  this.state.finishedTest ? (
+					 		<div className='score-section'>
+					 			You scored {this.state.score} out of {this.state.questions.length}
+					 		</div>
+					 	) : (
+					 		<>
+					 			<div className = "question-section">
+					 				<div classsName='question-count'>
+					 					<span> Question {this.state.currQuestion + 1} </span> of {this.state.questions.length}
+					 				</div>
+					 				<div className="question-text">{this.state.questions[this.state.currQuestion].prompt}</div>
+					 			</div>
+					 			<div className='answer-section'>
+					 				{this.state.questions[this.state.questions].answerOptions.map((answerOption) => (
+					 					<button onClick={() => this.onAnswerChosen(answerOption.isCorrect)}>{answerOption.answerText}</button>
+					 				))}
+					 			</div>
+					 		</>
+							
+					 	) 
+			) : ( 
+				<div className = "start-button" >
+					<button onClick = {this.onTestInit}> Start Quiz </button>
+				</div>
 				
-				hello testing
-				<MathJax.Provider>
-					<MathJax.Node  inline formula={'a = b'} />
-				</MathJax.Provider>
+			)}
+				<div className="btn-group">
+					<button onClick = { () => {
+						this.props.history.push('/EZ-Math-Editor')
+					}}> Switch to Editor Mode</button>
+
+				</div>
 			</div>
+
+
 			// <div className = "content">
 			// 	    <div className="Quiz">
 			// 		<h1>{this.state.readyToDisplay && this.state.Questions[this.state.currQuestion].prompt}</h1>

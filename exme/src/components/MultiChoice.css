@@ -1,17 +1,30 @@
-
-  .q-group button {
-	  background-color: #083e4f; /* Green background */
-	  border: 1px solid #032631; /* Green border */
-	  color: white; /* White text */
-	  /* Put the buttons starting on the bottom left of the screen*/
-	  bottom:0; 
-	  left:0;
-	  padding: 10px 24px; /* Some padding to make the button bigger */
-	  cursor: pointer; /* Pointer/hand icon */
-	  float: left; /* Float the buttons side by side */
-	}
   
-	
+  .start-button button{
+	background-color: #aa0404; /* Green background */
+	border: 1px solid green; /* Green border */
+	color: white; /* White text */
+	/* Put the buttons starting on the bottom left of the screen*/
+	bottom:0; 
+	left:0;
+	padding: 10px 24px; /* Some padding to make the button bigger */
+	cursor: pointer; /* Pointer/hand icon */
+	/* float: left */
+  }
+
+/*   
+	.mcapp { 
+		
+		background-color: #252d4a;
+		width: 450px;
+		min-height: 200px;
+		height: min-content;
+		border-radius: 15px;
+		padding: 20px;
+		box-shadow: 10px 10px 42px 0px rgba(0, 0, 0, 0.75);
+		display: flex;
+		justify-content: space-evenly;
+		  
+	} */
 	
 	.score-section {
 		display: flex;
@@ -55,19 +68,6 @@
 		justify-content: space-between;
 	  }
 	  
-	  .q-group button {
-		width: 100%;
-		font-size: 16px;
-		color: #ffffff;
-		background-color: #252d4a;
-		border-radius: 15px;
-		display: flex;
-		padding: 5px;
-		justify-content: flex-start;
-		align-items: center;
-		border: 5px solid #234668;
-		cursor: pointer;
-	  }
 	  
 	  .correct {
 		background-color: #2f922f;
