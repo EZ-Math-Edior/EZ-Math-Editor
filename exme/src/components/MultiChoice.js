@@ -23,6 +23,19 @@ export default class MultiChoice extends Component{
 		};
 	}
 
+	flush = () => {
+		this.setState({
+			key : null,
+			title : "",
+			currQuestion : 0,
+			currScore : 0,
+			startedTest : false,
+			finishedTest : false,
+			questions : [],
+			averageScore : 0,
+			totalTakers : 0
+		}); 
+	}
 
 	onAnswerChosen = (isCorrect) => {
 		if(isCorrect){
@@ -105,7 +118,7 @@ export default class MultiChoice extends Component{
 		})
 
 		// const content = JSON.parse(data).ops[0].insert
-		console.log(content)
+		// console.log(content)
 		content.split("\n").forEach( (elem) => {
 			console.log(elem)
 			let qSeg = elem.split(";;");
@@ -131,7 +144,13 @@ export default class MultiChoice extends Component{
 		
 		 })
 		 console.log(this.state.questions);
-		 this.setState({startedTest : true})
+
+		 if(this.state.questions.length === 0){
+			 alert("invalid test")
+			 this.flush();
+		 } else {
+			this.setState({startedTest : true})
+		 }
 
 	
 	}
