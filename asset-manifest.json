@@ -1,31 +1,27 @@
 {
   "files": {
-    "main.css": "/EZ-Math-Editor/static/css/main.420bc613.chunk.css",
-    "main.js": "/EZ-Math-Editor/static/js/main.2aa1a52d.chunk.js",
-    "main.js.map": "/EZ-Math-Editor/static/js/main.2aa1a52d.chunk.js.map",
-    "runtime-main.js": "/EZ-Math-Editor/static/js/runtime-main.71964325.js",
-    "runtime-main.js.map": "/EZ-Math-Editor/static/js/runtime-main.71964325.js.map",
-    "static/js/2.a3463157.chunk.js": "/EZ-Math-Editor/static/js/2.a3463157.chunk.js",
-    "static/js/2.a3463157.chunk.js.map": "/EZ-Math-Editor/static/js/2.a3463157.chunk.js.map",
-    "static/js/3.dec35ba2.chunk.js": "/EZ-Math-Editor/static/js/3.dec35ba2.chunk.js",
-    "static/js/3.dec35ba2.chunk.js.map": "/EZ-Math-Editor/static/js/3.dec35ba2.chunk.js.map",
-    "static/js/4.4a42088d.chunk.js": "/EZ-Math-Editor/static/js/4.4a42088d.chunk.js",
-    "static/js/4.4a42088d.chunk.js.map": "/EZ-Math-Editor/static/js/4.4a42088d.chunk.js.map",
-    "static/js/5.b072d48e.chunk.js": "/EZ-Math-Editor/static/js/5.b072d48e.chunk.js",
-    "static/js/5.b072d48e.chunk.js.map": "/EZ-Math-Editor/static/js/5.b072d48e.chunk.js.map",
-    "static/js/6.11dccf71.chunk.js": "/EZ-Math-Editor/static/js/6.11dccf71.chunk.js",
-    "static/js/6.11dccf71.chunk.js.map": "/EZ-Math-Editor/static/js/6.11dccf71.chunk.js.map",
+    "main.css": "/EZ-Math-Editor/static/css/main.33955494.chunk.css",
+    "main.js": "/EZ-Math-Editor/static/js/main.9f6d0e6b.chunk.js",
+    "main.js.map": "/EZ-Math-Editor/static/js/main.9f6d0e6b.chunk.js.map",
+    "runtime-main.js": "/EZ-Math-Editor/static/js/runtime-main.b1d9b8da.js",
+    "runtime-main.js.map": "/EZ-Math-Editor/static/js/runtime-main.b1d9b8da.js.map",
+    "static/css/2.8a61d981.chunk.css": "/EZ-Math-Editor/static/css/2.8a61d981.chunk.css",
+    "static/js/2.2402da88.chunk.js": "/EZ-Math-Editor/static/js/2.2402da88.chunk.js",
+    "static/js/2.2402da88.chunk.js.map": "/EZ-Math-Editor/static/js/2.2402da88.chunk.js.map",
+    "static/js/3.b7ce80fe.chunk.js": "/EZ-Math-Editor/static/js/3.b7ce80fe.chunk.js",
+    "static/js/3.b7ce80fe.chunk.js.map": "/EZ-Math-Editor/static/js/3.b7ce80fe.chunk.js.map",
     "index.html": "/EZ-Math-Editor/index.html",
-    "static/css/main.420bc613.chunk.css.map": "/EZ-Math-Editor/static/css/main.420bc613.chunk.css.map",
-    "static/js/2.a3463157.chunk.js.LICENSE.txt": "/EZ-Math-Editor/static/js/2.a3463157.chunk.js.LICENSE.txt",
-    "static/js/3.dec35ba2.chunk.js.LICENSE.txt": "/EZ-Math-Editor/static/js/3.dec35ba2.chunk.js.LICENSE.txt",
-    "static/js/4.4a42088d.chunk.js.LICENSE.txt": "/EZ-Math-Editor/static/js/4.4a42088d.chunk.js.LICENSE.txt",
-    "static/js/5.b072d48e.chunk.js.LICENSE.txt": "/EZ-Math-Editor/static/js/5.b072d48e.chunk.js.LICENSE.txt"
+    "static/css/2.8a61d981.chunk.css.map": "/EZ-Math-Editor/static/css/2.8a61d981.chunk.css.map",
+    "static/css/main.33955494.chunk.css.map": "/EZ-Math-Editor/static/css/main.33955494.chunk.css.map",
+    "static/js/2.2402da88.chunk.js.LICENSE.txt": "/EZ-Math-Editor/static/js/2.2402da88.chunk.js.LICENSE.txt",
+    "static/media/katex.css": "/EZ-Math-Editor/static/media/KaTeX_Typewriter-Regular.b6a56b14.woff",
+    "static/media/mathquill.css": "/EZ-Math-Editor/static/media/Symbola.c2f28720.woff"
   },
   "entrypoints": [
-    "static/js/runtime-main.71964325.js",
-    "static/js/3.dec35ba2.chunk.js",
-    "static/css/main.420bc613.chunk.css",
-    "static/js/main.2aa1a52d.chunk.js"
+    "static/js/runtime-main.b1d9b8da.js",
+    "static/css/2.8a61d981.chunk.css",
+    "static/js/2.2402da88.chunk.js",
+    "static/css/main.33955494.chunk.css",
+    "static/js/main.9f6d0e6b.chunk.js"
   ]
 }
