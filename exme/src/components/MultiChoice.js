@@ -12,6 +12,7 @@ export default class MultiChoice extends Component{
 
 		this.state = {
 			key : null,
+			title : "",
 			currQuestion : 0,
 			currScore : 0,
 			startedTest : false,
@@ -158,9 +159,9 @@ export default class MultiChoice extends Component{
 	}
 
 	testSetup = (title, body) => {
-		console.log(title);
-		console.log(body);
-		this.parseQuestions(body)
+		this.setState({title : title}, () => {
+			this.parseQuestions(body);
+		})
 	}
 
 	//adds a question to the question container
@@ -182,7 +183,11 @@ export default class MultiChoice extends Component{
 	render(){
 		return (
 			<div className = "mcapp">
-				{this.state.startedTest ? (
+				{this.state.startedTest ? 
+					<div className='title-section'>
+						{this.state.title}
+					</div>: null}
+				{this.state.startedTest ?  ( 
 					  this.state.finishedTest ? (
 					 		<div className='score-section'>
 					 			You scored {this.state.currScore} out of {this.state.questions.length} 
