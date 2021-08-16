@@ -49,13 +49,13 @@ class Sidebar extends React.Component {
                 <div className={classes.sidebarContainer}> 
                     <Button onClick={this.createNoteSetup}
                             className ={classes.newNoteBtn}>
-                                {!this.state.addingNote ? "new note" : "cancel"}
+                                {!this.state.addingNote ? "new file" : "cancel"}
                     </Button>
                     {this.state.addingNote ? 
                     <div>
                         <input type="text"
                             className={classes.newNoteInput}
-                            placeholder="Enter note title"
+                            placeholder="Enter file title"
                             onKeyUp={(e) => this.updateTitle(e.target.value)}>
                         </input>  
                         <Button onClick={this.createNote}

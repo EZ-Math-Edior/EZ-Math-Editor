@@ -23,7 +23,7 @@
   }
   
   .btn-group button {
-	  background-color: #04AA6D; /* Green background */
+	  background-color: #aa0404; /* Green background */
 	  border: 1px solid green; /* Green border */
 	  color: white; /* White text */
 	  /* Put the buttons starting on the bottom left of the screen*/
@@ -31,10 +31,15 @@
 	  left:0;
 	  padding: 10px 24px; /* Some padding to make the button bigger */
 	  cursor: pointer; /* Pointer/hand icon */
-	  float: left; /* Float the buttons side by side */
+	  float: right; 
 	}
 
 	.btn-group button:hover {
 		background-color: #1b3421;
 	  }
 	  
+	.container {
+		/* margin: 5px; */
+
+		float: left;
+	}

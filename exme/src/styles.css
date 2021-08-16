@@ -7,8 +7,8 @@ body {
 }
 
 .container .ql-editor {  /* found via element inspector */
-   width: 8.5in;
-   min-height: 11in;
+   width: 11.5in;
+   min-height: 8in;
    padding: 1in;
    margin: 1rem;
    box-shadow: 0 0 5px 0 rgba(0, 0, 0, .5);

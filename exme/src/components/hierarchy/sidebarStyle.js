@@ -21,7 +21,7 @@ const sidebarStyles = theme => ({
       height: '35px',
       borderBottom: '1px solid black',
       borderRadius: '0px',
-      backgroundColor: '#29487d',
+      backgroundColor: '#0073d8',
       color: 'white',
       '&:hover': {
         backgroundColor: '#88a2ce'
@@ -49,7 +49,7 @@ const sidebarStyles = theme => ({
     },
     newNoteSubmitBtn: {
       width: '100%',
-      backgroundColor: '#28787c',
+      backgroundColor: '#009364',
       borderRadius: '0px',
       color: 'white'
     }

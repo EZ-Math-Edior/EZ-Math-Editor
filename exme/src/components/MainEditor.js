@@ -62,7 +62,7 @@ export default class MainEditor extends Component{
 		console.log("creating...");
 		const note = {
 			title: title,
-			body: ''
+			body: '{"ops":[{"insert":"\\n\\n"}]}'
 		};
 		const newFromDB = await firebase
 				.firestore()
@@ -73,9 +73,11 @@ export default class MainEditor extends Component{
 					timestamp: firebase.firestore.FieldValue.serverTimestamp()
 				});
 		const newID = newFromDB.id;
-		await this.setState({notes : [...this.state.notes, note] });
-		const newNoteIndex = this.state.notes.indexOf(this.state.notes.filter(note => note.id === newID)[0]);
-		this.setState({ selectedNote: this.state.notes[newNoteIndex], seslectedNoteIndex: newNoteIndex });
+		this.setState({notes : [...this.state.notes, note] }, () => {
+			const newNoteIndex = this.state.notes.indexOf(this.state.notes.filter(note => note.id === newID)[0]);
+			this.setState({ selectedNote: this.state.notes[newNoteIndex], selectedNoteIndex: newNoteIndex });
+		});
+	
 	}
 
 
@@ -83,6 +85,8 @@ export default class MainEditor extends Component{
 	render(){
 		return (
 			<div>
+	
+			
 				<Sidebar
 					selectedNoteIndex = {this.state.selectedNoteIndex}
 					notes = {this.state.notes}
@@ -90,6 +94,8 @@ export default class MainEditor extends Component{
 					deleteNote = {this.deleteNote}
 					createNote = {this.createNote}
 				/>
+
+				<div className="container">
 				{this.state.selectedNote ? 
 				<RichTextEditor
 					selectedNoteIndex={this.state.selectedNoteIndex}
@@ -97,6 +103,8 @@ export default class MainEditor extends Component{
 					notes={this.state.notes}/>
 				: null
 				}
+				</div>
+		
 				<div className="btn-group">
 					<button onClick = { () => {
 							this.props.history.push('/EZ-Math-Tester')
