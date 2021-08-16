@@ -2,7 +2,7 @@ import React, { Component  }from 'react';
 import './MultiChoice.css';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import firebase from './firebase';
-import  MathJax from 'react-mathjax';
+
 //the router that presents the multiple choice testing
 //handles a collection of questions and assesses the user
 //data on these questions are pulled directly from the back end
@@ -11,11 +11,14 @@ export default class MultiChoice extends Component{
 		super(props);
 
 		this.state = {
+			key : null,
 			currQuestion : 0,
 			currScore : 0,
 			startedTest : false,
 			finishedTest : false,
-			questions : []
+			questions : [],
+			averageScore : 0,
+			totalTakers : 0
 		};
 	}
 
@@ -37,6 +40,41 @@ export default class MultiChoice extends Component{
 	}
 
 	onTestFinish = () => {
+		//modify master data
+		//increment takers by 1
+		//increment score by successes
+		firebase
+			.firestore()
+			.collection("tests")
+			.doc(this.state.key)
+			.get()
+			.then((doc) => {
+				if(doc.exists){
+					this.updateMaster(doc.data().sumScore, doc.data().sumTakers); //get [0] since theres only gonna be one
+				} else{
+					alert("test not found!");
+				}
+			})
+			.catch((e) => { console.log("error during query and load func")
+			});
+	}
+
+	updateMaster = (currCorrect, currTakers) => {
+		const newScore = currCorrect + this.state.currScore;
+		const newTakers = currTakers + 1;
+
+		const avg = Math.round( (newScore / (newTakers * this.state.questions.length)) * 100) / 100;
+		this.setState({averageScore : avg, totalTakers : newTakers}, () => {
+			firebase
+			.firestore()
+			.collection("tests")
+			.doc(this.state.key)
+			.update({
+				sumScore : newScore,
+				sumTakers : newTakers
+			}).catch((e) => { console.log("error turing update op")});
+	
+		})
 
 	}
 
@@ -46,40 +84,61 @@ export default class MultiChoice extends Component{
 	}
 
 	//stores all the questions into its array in state
+	//for now don't support formulas
+	//yQiP6IOm4rdyhE2RCXBv
 	parseQuestions = (data) => {
-		console.log(data);
-		var content = JSON.parse(data).ops[0].insert;
-		console.log(content);
+		// console.log(data);
+		// var arr = JSON.parse(data).ops.map(ins => {
+		// 	return ins.insert;
 
+		// }); //list of inserts
+		
+		// var content = "";
+		// arr.forEach(elem => {
+		// 	// console.log(elem);
+		// 	if(!elem.formula){
+		// 		content += elem;
+		// 	} else {
+		// 		console.log(elem);
+		// 	}
+		// })
+
+		const content = JSON.parse(data).ops[0].insert
+		console.log(content)
 		content.split("\n").forEach( (elem) => {
-			 let qSeg = elem.split(";;");
+			console.log(elem)
+			let qSeg = elem.split(";;");
+			 
 			 if(qSeg.length > 3){
 				let prompt = "";
 				let choices = []
-				let answer = ""
 				for(let i = 0; i < qSeg.length; ++i){ 
+					console.log(qSeg[i])
 					if(i === 0) {
 						prompt = qSeg[i];
 					} else if (i === qSeg.length-1){
-					   answer = choices[qSeg[i]-1];//load answer
+						choices[qSeg[i]-1].isCorrect = true;
 					} else {
-						choices.push(qSeg[i]);
+						choices.push({answerText: qSeg[i], isCorrect: false});
 					}
 				}
-			   //  console.log(prompt);
    
-				this.addQuestion(prompt, choices, answer);
+				console.log(prompt);
+				console.log(choices);
+				this.addQuestion(prompt, choices);
 			 }
 		
 		 })
-		 this.setState({readyToDisplay : true})
-		 console.log(this.state.Questions);
+		 console.log(this.state.questions);
+		 this.setState({startedTest : true})
 
+	
 	}
 
 	queryTestDB = () => {
 		var key = prompt("Enter test key: ");
 		if(!key) return;
+		this.setState({key : key})
 		firebase
 			.firestore()
 			.collection("tests")
@@ -90,7 +149,7 @@ export default class MultiChoice extends Component{
 					this.testSetup(doc.data().title, doc.data().body); //get [0] since theres only gonna be one
 
 				} else{
-					console.log("no data found");
+					alert("test not found!");
 				}
 			})
 			.catch((e) => { console.log("error during query and load func")
@@ -101,20 +160,20 @@ export default class MultiChoice extends Component{
 	testSetup = (title, body) => {
 		console.log(title);
 		console.log(body);
+		this.parseQuestions(body)
 	}
 
 	//adds a question to the question container
-	addQuestion = (prompt, choices, answer) => {
-		var temp = this.state.Questions;
+	addQuestion = (prompt, choices) => {
+		var temp = this.state.questions;
 		var question = {
 			prompt : prompt,
-			choices : choices,
-			answer : answer
+			choices : choices
 		}
 
 		temp.push(question)
 		this.setState({
-			Questions : temp
+			questions : temp
 		})
 	}
 
@@ -126,20 +185,26 @@ export default class MultiChoice extends Component{
 				{this.state.startedTest ? (
 					  this.state.finishedTest ? (
 					 		<div className='score-section'>
-					 			You scored {this.state.score} out of {this.state.questions.length}
+					 			You scored {this.state.currScore} out of {this.state.questions.length} 
+								<br/>
+								Average Score: {this.state.averageScore}
+								<br/>
+								Total Takers: {this.state.totalTakers}
 					 		</div>
 					 	) : (
 					 		<>
 					 			<div className = "question-section">
-					 				<div classsName='question-count'>
+					 				<div className='question-count'>
 					 					<span> Question {this.state.currQuestion + 1} </span> of {this.state.questions.length}
 					 				</div>
 					 				<div className="question-text">{this.state.questions[this.state.currQuestion].prompt}</div>
 					 			</div>
 					 			<div className='answer-section'>
-					 				{this.state.questions[this.state.questions].answerOptions.map((answerOption) => (
-					 					<button onClick={() => this.onAnswerChosen(answerOption.isCorrect)}>{answerOption.answerText}</button>
-					 				))}
+					 				{this.state.questions[this.state.currQuestion].choices.map((answerOption) => (
+					 					<div class = 'btnwrap' >
+										 <button onClick={() => this.onAnswerChosen(answerOption.isCorrect)}>{answerOption.answerText}</button>
+										</div>
+								 	))}
 					 			</div>
 					 		</>
 							

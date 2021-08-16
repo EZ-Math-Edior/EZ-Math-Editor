@@ -128,7 +128,9 @@ export default class RichTextEditor extends React.Component {
 	}, 1500);
 		
 	publishTest = async () => {
+		// console.log(this.quill.current.editor.root.innerHTML)
 		var title =  prompt("Enter Test Name", "");
+		if(!title) return;
 		const data = JSON.stringify( this.quill.current.editor.getContents());
 
 		const test = {
@@ -141,6 +143,8 @@ export default class RichTextEditor extends React.Component {
 				.add({
 					title: test.title,
 					body: test.body,
+					sumScore: 0,
+					sumTakers: 0
 				});
 		const newID = newFromDB.id;
 		alert("TEST KEY: " + newID);

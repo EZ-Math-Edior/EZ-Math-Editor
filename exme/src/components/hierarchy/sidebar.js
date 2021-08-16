@@ -60,7 +60,7 @@ class Sidebar extends React.Component {
                         </input>  
                         <Button onClick={this.createNote}
                                 className={classes.newNoteSubmitBtn}>
-                                    Submit Note
+                                    Submit File
                         </Button>
 
                     </div> : null
@@ -87,7 +87,7 @@ class Sidebar extends React.Component {
                 </div>
             )
         } else {
-            return(<div>Add a note!</div>);
+            return(<div>Add a File!</div>);
         }
     } 
 
