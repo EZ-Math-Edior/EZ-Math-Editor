@@ -2,7 +2,7 @@
 
 Access https://ez-math-editor.github.io/EZ-Math-Editor/ and you’re good to go!
 
-Test making guide:
+<b> Test making guide: </b>
 
 In a file, the format goes as follows:
 
@@ -17,7 +17,7 @@ Then press Make Test at the bottom, and it’ll spit out a key.
 Save this key for future use.
 
 
-Test taking guide:
+<b>Test taking guide:</b>
 
 Go to test taking mode through button at bottom of screen
 
