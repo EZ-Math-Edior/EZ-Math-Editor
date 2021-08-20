@@ -1,7 +1,18 @@
 # EZ-Math-Editor
 
-useful links:
+Access https://ez-math-editor.github.io/EZ-Math-Editor/ and you’re good to go!
 
-[Drive](https://drive.google.com/drive/folders/1T6ydUSudEIh_jMg65MtJXYpwYPvX-974?usp=sharing)
+Test making guide:
+In a file, the format goes as follows:
+prompt1 ;; choice1 ;; choice2 ;; … ;; correct choice number
+prompt2 ;; choice1 ;; choice2 ;; … ;; correct choice number
+…
+Then press Make Test at the bottom, and it’ll spit out a key.
+Save this key for future use.
+
+Test taking guide:
+Go to test taking mode through button at bottom of screen
+Press load test and input key from above
+
 
 
